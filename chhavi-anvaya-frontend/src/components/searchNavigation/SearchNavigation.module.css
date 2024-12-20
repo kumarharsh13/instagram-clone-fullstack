@@ -1,0 +1,51 @@
+.searchNavigation {
+	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.searchBar {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	font-size: 2rem;
+	border: 1px solid var(--text-secondary);
+	border-radius: 10px;
+	padding: 0rem 1rem;
+}
+
+.searchBar > input {
+	border-style: none;
+}
+
+.searchData {
+	padding: 1rem 0rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+.searchProfileContainer {
+	padding: 1rem 0rem;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 1rem;
+	width: 100%;
+}
+
+.searchUserProfileImage {
+  width: 40px;     
+  height: 40px;
+  border-radius: 50%; 
+  overflow: hidden;  
+}
+
+.searchUserProfileImage img {
+  width: 100%;     
+  height: 100%;  
+  object-fit: cover; 
+}

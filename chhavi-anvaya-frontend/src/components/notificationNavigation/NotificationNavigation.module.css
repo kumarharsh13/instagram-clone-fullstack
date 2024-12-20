@@ -1,0 +1,56 @@
+.notificationNavigation {
+	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 1rem;
+}
+
+.followRequest {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 1rem;
+	border-bottom: 1px solid var(--text-secondary);
+	width: 100%;
+	gap: 2rem;
+}
+
+.noticationContainer {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-self: center;
+	align-items: center;
+	gap: 2rem;
+}
+
+.notficationData {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	gap: 1rem;
+}
+
+.noticationProfileImage {
+  width: 30px;     
+  height: 30px;
+  border-radius: 50%; 
+  overflow: hidden;  
+}
+
+.noticationProfileImage img, .notificationPostImage img {
+  width: 100%;     
+  height: 100%;  
+  object-fit: cover; 
+}
+
+.notificationPostImage {
+  width: 25px;     
+  height: 25px;
+  border-radius: 10%; 
+  overflow: hidden;  
+}

@@ -1,0 +1,25 @@
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.auth-page {
+  flex-direction: column; /* Stack the elements vertically on auth pages */
+}
+
+.content {
+  flex: 1; /* The content takes up 75% by default when navigation is shown */
+  padding: 20px;
+  transition: width 0.3s ease-in-out;
+}
+
+.full-width {
+  flex: 1 1 100%; /* Take up 100% width when on auth pages (SignIn or SignUp) */
+}
+
+.navigation {
+  width: 25%;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+}

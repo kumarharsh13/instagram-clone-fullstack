@@ -1,0 +1,59 @@
+.signIn,
+.signInFormDescription,
+.logoNameDetail,
+.signInForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.signIn {
+  margin: 2rem;
+  padding: 20rem 2rem 2rem 2rem;
+}
+
+.signInFormDescription {
+  border: 1px solid var(--text-secondary);
+  box-shadow: 1px 1px 1px var(--text-secondary);
+  padding: 2rem 2rem 1rem 2rem;
+  width: 30%;
+}
+
+.signInFormContant {
+  margin: 1.2rem 4rem;
+  background: var(--secondary_background);
+}
+
+input,
+button {
+  width: 100%;
+  margin: 0.3rem 0rem;
+  padding: 0.8rem;
+}
+
+.submitButton {
+  width: 70%;
+}
+
+.logo {
+  padding: 1.2rem 4rem;
+  text-align: center;
+  font-family: "Meow Script", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 2.8rem;
+}
+
+.description {
+  font-size: 1.2rem;
+}
+
+.signInRedirect {
+  border: 1px solid var(--text-secondary);
+  box-shadow: 1px 1px 1px var(--text-secondary);
+  width: 30%;
+  margin: 1rem 0rem;
+  padding: 2rem 10rem;
+  font-size: 1rem;
+}

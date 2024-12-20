@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Meow+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+:root {
+  --primary-backgroud: #ffffff;
+  --secondary-background: #f8f8f8;
+  --button-link-color: #0095f6;
+  --button-link--hover-color: #0080ff;
+  --text-primamry: #262626;
+  --text-secondary: #8e8e8e;
+  --heart-icon-default: #b0b0b0;
+  --heart-icon: #ed4956;
+}
+
+html {
+  font-size: 62.5%;
+  overflow-x: hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--primary-backgroud);
+  color: var(--text-primamry);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", sans-serif;
+  overflow-x: hidden;
+}
+
+button {
+  background: var(--button-link-color);
+  color: var(--primary-backgroud);
+  border-radius: 10px;
+  border-style: none;
+}
+
+button:hover {
+  background: var(--button-link--hover-color);
+}
+
+a {
+  text-decoration: none;
+  color: var(--button-link-color);
+}
+
+a:hover {
+  color: var(--button-link--hover-color);
+}
