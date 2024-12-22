@@ -43,7 +43,7 @@ function Navigation() {
                 )
               }
             >
-              <Link to="/home">
+              <Link to="/homepage">
                 <FontAwesomeIcon icon={faHouse} />
               </Link>
             </li>

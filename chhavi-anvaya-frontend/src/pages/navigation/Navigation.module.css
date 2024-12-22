@@ -1,6 +1,15 @@
 .sideNavBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   margin: 1rem;
   border-right: 1px solid var(--text-secondary);
+  position: sticky; 
+  top: 0;
+  height: 100vh; 
+  z-index: 10;
+  overflow-y: auto;
 }
 
 .logo {
@@ -17,6 +26,10 @@
   justify-content: flex-start;
   align-items: flex-start;
   gap: 2rem;
+}
+
+.navigationView {
+  flex-grow: 1; 
 }
 
 ul {

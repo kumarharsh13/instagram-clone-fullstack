@@ -1,0 +1,111 @@
+.home {
+  margin: 1rem;
+  padding: 1rem;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	gap: 4rem;
+}
+
+.feed {
+  padding: 2rem;
+	width: 60%;
+}
+
+.feedContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 4rem;
+}
+
+.profilePostedBy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+}
+
+.profilePostedByImage, .accountImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.postImageContainer {
+  width: 100%;
+  overflow: hidden;
+}
+
+.profilePostedByImage img,
+.postImageContainer img,
+.accountImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.likeAndCommentIcons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 3.4rem;
+}
+
+.likeCounts {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.captions {
+  font-size: 1.4rem;
+}
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.sugesstionToFollow {
+	width: 30%;
+	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 2rem;
+	gap: 4rem;
+}
+
+.suggestionTextLink, .suggestedAccount {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.suggestedAccount button {
+	width: 20%;
+}
+
+.accountDetails {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 2rem;
+}
+
+.accountDetails p {
+	font-size: 1.6rem;
+}
+
+

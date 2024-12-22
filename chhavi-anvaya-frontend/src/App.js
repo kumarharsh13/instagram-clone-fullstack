@@ -5,6 +5,7 @@ import SignUp from "./pages/signup/SignUp";
 import SignIn from "./pages/signin/SignIn";
 import Navigation from "./pages/navigation/Navigation";
 import Profile from "./pages/profile/Profile";
+import Homepage from './pages/home/Home'
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function Main() {
         <Routes>
           <Route index element={<SignIn />} />
           <Route path="signUp" element={<SignUp />} />
+          <Route path="homepage" element={<Homepage />} />
+          <Route path="explore" element={<Homepage />} />
+          <Route path="messages" element={<Homepage />} />
           <Route path="profile/:username" element={<Profile />} />
         </Routes>
       </div>

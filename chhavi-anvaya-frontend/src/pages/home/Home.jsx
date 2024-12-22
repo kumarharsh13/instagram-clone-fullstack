@@ -1,17 +1,155 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHeart,
+	faComment
+
+} from "@fortawesome/free-regular-svg-icons"
+import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons"
+import styles from '../home/Home.module.css'
+
 function Home() {
   return (
-		<div className="home">
-			<div className="feed">
-				<div className="feedContainer">
-					<div className="profilePostedBy"></div>
-					<div className="postImageContainer"></div>
-					<div className="likeAndCommentIcons"></div>
-					<div className="likeCounts"></div>
-					<div className="captions"></div>
-					<div className="comments"></div>
+		<div className={styles.home}>
+			<div className={styles.feed}>
+				<div className={styles.feedContainer}>
+					<div className={styles.profilePostedBy}>
+						<div className={styles.profilePostedByImage}>
+							<img src="../../croissant.jpg" alt="" />
+						</div>
+						<h3>gootiya</h3>
+					</div>
+					<div className={styles.postImageContainer}>
+						<img src="../../croissant.jpg" alt="" />
+					</div>
+					<div className={styles.likeAndCommentIcons}>
+						<FontAwesomeIcon icon={faHeart} />
+						<FontAwesomeIcon icon={faComment} />
+					</div>
+					<div className={styles.likeCounts}>876 Likes</div>
+					<div className={styles.captions}>Chlo Chle Kahi Door Duniya k Parre</div>
+					<div className={styles.comments}>
+						<p>View all 65 comments</p>
+						<input type="text" placeholder="Add your comment here" />
+					</div>
+				</div>
+
+				<div className={styles.feedContainer}>
+					<div className={styles.profilePostedBy}>
+						<div className={styles.profilePostedByImage}>
+							<img src="../../croissant.jpg" alt="" />
+						</div>
+						<h3>gootiya</h3>
+					</div>
+					<div className={styles.postImageContainer}>
+						<img src="../../croissant.jpg" alt="" />
+					</div>
+					<div className={styles.likeAndCommentIcons}>
+						<FontAwesomeIcon icon={faHeart} />
+						<FontAwesomeIcon icon={faComment} />
+					</div>
+					<div className={styles.likeCounts}>876 Likes</div>
+					<div className={styles.captions}>Chlo Chle Kahi Door Duniya k Parre</div>
+					<div className={styles.comments}>
+						<p>View all 65 comments</p>
+						<input type="text" placeholder="Add your comment here" />
+					</div>
+				</div>
+
+
+				<div className={styles.feedContainer}>
+					<div className={styles.profilePostedBy}>
+						<div className={styles.profilePostedByImage}>
+							<img src="../../croissant.jpg" alt="" />
+						</div>
+						<h3>gootiya</h3>
+					</div>
+					<div className={styles.postImageContainer}>
+						<img src="../../croissant.jpg" alt="" />
+					</div>
+					<div className={styles.likeAndCommentIcons}>
+						<FontAwesomeIcon icon={faHeartSolid} />
+						<FontAwesomeIcon icon={faComment} />
+					</div>
+					<div className={styles.likeCounts}>876 Likes</div>
+					<div className={styles.captions}>Chlo Chle Kahi Door Duniya k Parre</div>
+					<div className={styles.comments}>
+						<p>View all 65 comments</p>
+						<input type="text" placeholder="Add your comment here" />
+					</div>
+				</div>
+				<div className={styles.feedContainer}>
+					<div className={styles.profilePostedBy}>
+						<div className={styles.profilePostedByImage}>
+							<img src="../../croissant.jpg" alt="" />
+						</div>
+						<h3>gootiya</h3>
+					</div>
+					<div className={styles.postImageContainer}>
+						<img src="../../croissant.jpg" alt="" />
+					</div>
+					<div className={styles.likeAndCommentIcons}>
+						<FontAwesomeIcon icon={faHeart} />
+						<FontAwesomeIcon icon={faComment} />
+					</div>
+					<div className={styles.likeCounts}>876 Likes</div>
+					<div className={styles.captions}>Chlo Chle Kahi Door Duniya k Parre</div>
+					<div className={styles.comments}>
+						<p>View all 65 comments</p>
+						<input type="text" placeholder="Add your comment here" />
+					</div>
 				</div>
 			</div>
-			<div className="sugesstionToFollow"></div>
+			<div className={styles.sugesstionToFollow}>
+				<div className={styles.suggestionTextLink}>
+					<p>Sugeestion for you</p>
+					<a href="http://www.google.com" target="_blank">See All</a>
+				</div>
+				<div className={styles.suggestedAccount}>
+					<div className={styles.accountDetails}>
+						<div className={styles.accountImage}>
+							<img src="../../croissant.jpg" alt="" />
+						</div>
+						<p>gajodhar</p>
+					</div>
+					<button>Follow</button>
+				</div>
+				<div className={styles.suggestedAccount}>
+					<div className={styles.accountDetails}>
+						<div className={styles.accountImage}>
+							<img src="../../croissant.jpg" alt="" />
+						</div>
+						<p>gajodhar</p>
+					</div>
+					<button>Follow</button>
+				</div>
+				<div className={styles.suggestedAccount}>
+					<div className={styles.accountDetails}>
+						<div className={styles.accountImage}>
+							<img src="../../croissant.jpg" alt="" />
+						</div>
+						<p>gajodhar</p>
+					</div>
+					<button>Follow</button>
+				</div>
+				<div className={styles.suggestedAccount}>
+					<div className={styles.accountDetails}>
+						<div className={styles.accountImage}>
+							<img src="../../croissant.jpg" alt="" />
+						</div>
+						<p>gajodhar</p>
+					</div>
+					<button>Follow</button>
+				</div>
+				<div className={styles.suggestedAccount}>
+					<div className={styles.accountDetails}>
+						<div className={styles.accountImage}>
+							<img src="../../croissant.jpg" alt="" />
+						</div>
+						<p>gajodhar</p>
+					</div>
+					<button>Follow</button>
+				</div>
+			</div>
 		</div>
 	)
 }
