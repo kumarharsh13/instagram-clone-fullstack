@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   left: 0;
-	transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -20,10 +20,10 @@
 }
 
 .suggestedAccount {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .accountImage {
@@ -40,18 +40,18 @@
 }
 
 .suggestedAccount button {
-	width: 20%;
+  width: 20%;
 }
 
 .accountDetails {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
 }
 
 .accountDetails p {
-	font-size: 1.6rem;
+  font-size: 1.6rem;
 }
 
 .closeButton {

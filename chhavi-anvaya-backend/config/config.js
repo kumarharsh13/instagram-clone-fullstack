@@ -1,5 +1,5 @@
-const dotenv = require('dotenv');
-dotenv.config();  // Loads environment variables from the .env file
+const dotenv = require("dotenv");
+dotenv.config(); // Loads environment variables from the .env file
 
 module.exports = {
   development: {
@@ -7,7 +7,7 @@ module.exports = {
     password: process.env.PG_PASSWORD,
     database: process.env.PG_DATABASE,
     host: process.env.PG_HOST,
-    dialect: 'postgres',
+    dialect: "postgres",
     port: process.env.PG_PORT,
   },
 
@@ -16,7 +16,7 @@ module.exports = {
     password: process.env.PG_PASSWORD,
     database: process.env.PG_DATABASE,
     host: process.env.PG_HOST,
-    dialect: 'postgres',
+    dialect: "postgres",
     port: process.env.PG_PORT,
-  }
+  },
 };

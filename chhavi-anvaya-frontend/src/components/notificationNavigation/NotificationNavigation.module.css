@@ -36,21 +36,22 @@
 }
 
 .noticationProfileImage {
-  width: 30px;     
-  height: 30px;
-  border-radius: 50%; 
-  overflow: hidden;  
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	overflow: hidden;
 }
 
-.noticationProfileImage img, .notificationPostImage img {
-  width: 100%;     
-  height: 100%;  
-  object-fit: cover; 
+.noticationProfileImage img,
+.notificationPostImage img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 .notificationPostImage {
-  width: 25px;     
-  height: 25px;
-  border-radius: 10%; 
-  overflow: hidden;  
+	width: 25px;
+	height: 25px;
+	border-radius: 10%;
+	overflow: hidden;
 }

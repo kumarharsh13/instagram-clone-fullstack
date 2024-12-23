@@ -1,15 +1,15 @@
 .home {
   margin: 1rem;
   padding: 1rem;
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-start;
-	gap: 4rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 4rem;
 }
 
 .feed {
   padding: 2rem;
-	width: 60%;
+  width: 60%;
 }
 
 .feedContainer {
@@ -29,7 +29,8 @@
   font-size: 1.2rem;
 }
 
-.profilePostedByImage, .accountImage {
+.profilePostedByImage,
+.accountImage {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -76,36 +77,35 @@
 }
 
 .sugesstionToFollow {
-	width: 30%;
-	padding: 2rem;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	font-size: 2rem;
-	gap: 4rem;
+  width: 30%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  gap: 4rem;
 }
 
-.suggestionTextLink, .suggestedAccount {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+.suggestionTextLink,
+.suggestedAccount {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .suggestedAccount button {
-	width: 20%;
+  width: 20%;
 }
 
 .accountDetails {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
 }
 
 .accountDetails p {
-	font-size: 1.6rem;
+  font-size: 1.6rem;
 }
-
-

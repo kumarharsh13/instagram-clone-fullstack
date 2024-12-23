@@ -5,7 +5,7 @@ import SignUp from "./pages/signup/SignUp";
 import SignIn from "./pages/signin/SignIn";
 import Navigation from "./pages/navigation/Navigation";
 import Profile from "./pages/profile/Profile";
-import Homepage from './pages/home/Home'
+import Homepage from "./pages/home/Home";
 
 function App() {
   return (
@@ -17,12 +17,13 @@ function App() {
 
 function Main() {
   const location = useLocation();
-  const isAuthPage = location.pathname === "/signUp" || location.pathname === "/";
+  const isAuthPage =
+    location.pathname === "/signUp" || location.pathname === "/";
 
   return (
-    <div className={`app-container ${isAuthPage ? 'auth-page' : ''}`}>
+    <div className={`app-container ${isAuthPage ? "auth-page" : ""}`}>
       {!isAuthPage && <Navigation />}
-      <div className={`content ${isAuthPage ? 'full-width' : ''}`}>
+      <div className={`content ${isAuthPage ? "full-width" : ""}`}>
         <Routes>
           <Route index element={<SignIn />} />
           <Route path="signUp" element={<SignUp />} />

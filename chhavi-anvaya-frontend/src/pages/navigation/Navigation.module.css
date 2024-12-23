@@ -5,9 +5,9 @@
   align-items: flex-start;
   margin: 1rem;
   border-right: 1px solid var(--text-secondary);
-  position: sticky; 
+  position: sticky;
   top: 0;
-  height: 100vh; 
+  height: 100vh;
   z-index: 10;
   overflow-y: auto;
 }
@@ -29,7 +29,7 @@
 }
 
 .navigationView {
-  flex-grow: 1; 
+  flex-grow: 1;
 }
 
 ul {
