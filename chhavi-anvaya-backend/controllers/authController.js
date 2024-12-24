@@ -12,12 +12,12 @@ const signUp = async (req, res) => {
     if (existingUsername)
       return res.status(400).json({ message: "Username already in use." });
 
-    const hashPassowrd = await bcrypt.hash(password, 10);
+    const hashedPassowrd = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
       email,
       username,
-      password: hashPassowrd,
+      password: hashedPassowrd,
       mobile,
       name: fullName,
     });
@@ -30,11 +30,9 @@ const signUp = async (req, res) => {
 };
 
 const signIn = async (req, res) => {
-  const { email, username, password } = req.body;
+  const { email, password } = req.body;
   try {
-    const user = await User.findOne({
-      where: { [Op.or]: [{ email }, { username }] },
-    });
+    const user = await User.findOne({ where: { email } });
 
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
@@ -44,16 +42,23 @@ const signIn = async (req, res) => {
 
     const token = generateJwtToken(user);
 
-    res.cookie("auth_token", token, {
+    res.cookie("token", token, {
       httpOnly: true, // Prevents client-side JS from accessing the cookie
-      secure: process.env.NODE_ENV === "production", // Secure flag for HTTPS
+      secure: process.env.NODE_ENV === "production" ? true : false, // Should be true in production (HTTPS)
       sameSite: "Strict", // Prevents CSRF attacks
-      maxAge: 3600000, // Set the cookie's expiration (e.g., 1 hour)
+      maxAge: 3600000, // Set cookie expiration (1 hour)
     });
 
-    res
-      .status(200)
-      .json({ success: true, message: "Signed in successfully", token });
+    return res.status(200).json({
+      success: true,
+      message: "Signed in successfully",
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+      },
+      token: token,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Something went wrong" });
@@ -68,4 +73,5 @@ const generateJwtToken = (user) => {
   );
   return token;
 };
+
 module.exports = { signUp, signIn };

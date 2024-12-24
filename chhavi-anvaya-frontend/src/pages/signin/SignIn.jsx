@@ -1,7 +1,8 @@
-import React from 'react';
+import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { AuthContext } from '../../context/AuthContext';
 import { signIn } from '../../services/authService';
 import styles from '../signin/SignIn.module.css';
 
@@ -15,6 +16,7 @@ const validationSchema = Yup.object({
 });
 
 function SignIn() {
+  const { setAuthUser } = useContext(AuthContext)
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -28,7 +30,10 @@ function SignIn() {
         const response = await signIn(values);
         if (response.success) {
           // Store JWT token in localStorage for session management
-          localStorage.setItem('token', response.token);
+          document.cookie = `token=${response.token}; path=/; Secure; HttpOnly; SameSite=Strict`;
+          console.log(response)
+          console.log(response.user)
+          setAuthUser(response.user)
           navigate('/homepage');
         } else {
           alert(response.message);

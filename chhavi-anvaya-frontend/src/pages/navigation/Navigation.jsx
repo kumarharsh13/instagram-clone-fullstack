@@ -1,4 +1,5 @@
-import { useReducer } from "react";
+import { useContext, useReducer } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
@@ -9,9 +10,10 @@ import {
   faSquarePlus,
   faUser,
   faGear,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "../navigation/Navigation.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavigationReducer, {
   SET_ACTIVE_VIEW,
 } from "../../reducers/NavigationReducer";
@@ -27,6 +29,14 @@ function Navigation() {
   const [state, dispatch] = useReducer(NavigationReducer, {
     activeView: <HomeNavigation handleIconClick={handleIconClick} />,
   });
+  
+  const {user, signOut} = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  const handleSignOut = () => {
+    signOut();
+    navigate('/');
+  }
 
   return (
     <div className={styles.sideNavBar}>
@@ -75,6 +85,11 @@ function Navigation() {
               <Link to="/settings">
                 <FontAwesomeIcon icon={faGear} />
               </Link>
+            </li>
+            <li
+              onClick={handleSignOut}
+            >
+              <FontAwesomeIcon icon={faRightFromBracket} />
             </li>
           </ul>
         </nav>

@@ -33,7 +33,8 @@ button {
 }
 
 .submitButton {
-  width: 70%;
+  width: 75%;
+  margin: 0rem 4rem;
 }
 
 .logo {
