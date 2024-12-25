@@ -40,7 +40,7 @@ const signIn = async (req, res) => {
     if (!isValidPassword)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = generateJwtToken(user);
+    const token = generateJwtToken({ id: user.id, username: user.username });
 
     res.cookie("token", token, {
       httpOnly: true, // Prevents client-side JS from accessing the cookie

@@ -22,21 +22,26 @@ import SearchNavigation from "../../components/searchNavigation/SearchNavigation
 import NotificationNavigation from "../../components/notificationNavigation/NotificationNavigation";
 
 function Navigation() {
+  const { user, signOut } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const handleIconClick = (view) => {
     dispatch({ type: SET_ACTIVE_VIEW, payload: view });
   };
 
-  const [state, dispatch] = useReducer(NavigationReducer, {
-    activeView: <HomeNavigation handleIconClick={handleIconClick} />,
-  });
-  
-  const {user, signOut} = useContext(AuthContext)
-  const navigate = useNavigate()
-
   const handleSignOut = () => {
     signOut();
-    navigate('/');
-  }
+    navigate("/");
+  };
+
+  const [state, dispatch] = useReducer(NavigationReducer, {
+    activeView: (
+      <HomeNavigation
+        handleIconClick={handleIconClick}
+        handleSignOut={handleSignOut}
+      />
+    ),
+  });
 
   return (
     <div className={styles.sideNavBar}>
@@ -77,7 +82,7 @@ function Navigation() {
               <FontAwesomeIcon icon={faSquarePlus} />
             </li>
             <li>
-              <Link to="profile/hello">
+              <Link to={`profile/${user?.username}`}>
                 <FontAwesomeIcon icon={faUser} />
               </Link>
             </li>
@@ -86,9 +91,7 @@ function Navigation() {
                 <FontAwesomeIcon icon={faGear} />
               </Link>
             </li>
-            <li
-              onClick={handleSignOut}
-            >
+            <li onClick={handleSignOut}>
               <FontAwesomeIcon icon={faRightFromBracket} />
             </li>
           </ul>

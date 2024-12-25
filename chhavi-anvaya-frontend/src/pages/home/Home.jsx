@@ -6,7 +6,7 @@ import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import styles from "../home/Home.module.css";
 
 function Home() {
-  const { user, signOut } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     user && (

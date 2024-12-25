@@ -3,6 +3,7 @@ import axios from "axios";
 
 const API_URL =
   process.env.REACT_APP_API_URL || "http://localhost:5000/api/auth";
+
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
@@ -19,10 +20,12 @@ const AuthProvider = ({ children }) => {
       axios
         .get(`${API_URL}/verify_token`, { withCredentials: true })
         .then((res) => {
+          console.log("User verified from token", res.data);
           setUser(res.data.user);
         })
-        .catch((error) => {
+        .catch((error) => { 
           console.log("Token verification failed.", error);
+          setUser(null)
         });
     }
   }, []);
@@ -33,7 +36,7 @@ const AuthProvider = ({ children }) => {
 
   const signOut = () => {
     setUser(null);
-    document.cookie = "token=; Max-Age=0; path=/";
+    document.cookie = "token=; Max-Age=0; path=/; Secure; SameSite=Strict";
   };
 
   return (

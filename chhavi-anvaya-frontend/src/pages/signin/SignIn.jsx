@@ -31,10 +31,8 @@ function SignIn() {
         if (response.success) {
           // Store JWT token in localStorage for session management
           document.cookie = `token=${response.token}; path=/; Secure; HttpOnly; SameSite=Strict`;
-          console.log(response)
-          console.log(response.user)
           setAuthUser(response.user)
-          navigate('/homepage');
+          navigate('/homepage', { replace: true });
         } else {
           alert(response.message);
         }
