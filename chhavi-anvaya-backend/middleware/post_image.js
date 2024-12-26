@@ -5,7 +5,7 @@ const path = require("path");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Specify the directory where files will be stored
-    cb(null, "post_image/");
+    cb(null, "images/post_image/");
   },
   filename: function (req, file, cb) {
     // Set the filename to the user's id and the original file extension

@@ -1,0 +1,65 @@
+.prevNextButton {
+	padding: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 2rem;
+}
+
+.prevNextButton button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.imageUpload p {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, 0%);
+	font-size: 1.4rem;
+  background: var(--button-link-color);
+  color: var(--primary-backgroud);
+  border-radius: 10px;
+  border-style: none;
+  padding: 0.8rem;
+}
+
+.imageUpload p:hover {
+	background: var(--button-link--hover-color);
+}
+
+.imageUpload input {
+	opacity: 0;
+}
+
+.imagePreview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.imagePreview img {
+	width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.caption {
+	padding: 2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+input,
+textarea,
+button {
+  width: 100%;
+  margin: 0.3rem 0rem;
+  padding: 0.8rem;
+}

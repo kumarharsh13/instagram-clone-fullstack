@@ -4,7 +4,7 @@ import SearchNavigation from "./searchNavigation/SearchNavigation";
 import NotificationNavigation from "./notificationNavigation/NotificationNavigation";
 import { useContext } from "react";
 
-function HomeNavigation({ handleIconClick, handleSignOut }) {
+function HomeNavigation({ handleIconClick, handleSignOut, handleSetCreatePost }) {
   const { user } = useContext(AuthContext)
   return (
     <ul>
@@ -13,7 +13,7 @@ function HomeNavigation({ handleIconClick, handleSignOut }) {
       <li onClick={() => handleIconClick(<SearchNavigation />)}>Search</li>
       <Link to="/messages"><li>Messages</li></Link>
       <li onClick={() => handleIconClick(<NotificationNavigation />)}>Notifications</li>
-      <li>Create Post</li>
+      <li onClick={() => handleSetCreatePost(true)}>Create Post</li>
       <Link to={`profile/${user?.username}`}><li>Profile</li></Link>
       <Link to="/settings"><li>Settings</li></Link>
       <li onClick={() => handleSignOut()}>Log Out</li>

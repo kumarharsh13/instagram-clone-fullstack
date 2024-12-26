@@ -1,4 +1,4 @@
-import styles from "./FollowModal.module.css"; // Import the modal's CSS styles
+import styles from "./FollowModal.module.css";
 
 function FollowModal({ isVisible, onClose }) {
   if (!isVisible) return null;

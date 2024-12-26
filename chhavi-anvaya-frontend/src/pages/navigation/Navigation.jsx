@@ -21,7 +21,7 @@ import HomeNavigation from "../../components/HomeNavigation";
 import SearchNavigation from "../../components/searchNavigation/SearchNavigation";
 import NotificationNavigation from "../../components/notificationNavigation/NotificationNavigation";
 
-function Navigation() {
+function Navigation({ handleSetCreatePost }) {
   const { user, signOut } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -38,6 +38,7 @@ function Navigation() {
     activeView: (
       <HomeNavigation
         handleIconClick={handleIconClick}
+        handleSetCreatePost={handleSetCreatePost}
         handleSignOut={handleSignOut}
       />
     ),
@@ -78,7 +79,7 @@ function Navigation() {
             <li onClick={() => handleIconClick(<NotificationNavigation />)}>
               <FontAwesomeIcon icon={faHeart} />
             </li>
-            <li>
+            <li onClick={() => handleSetCreatePost(true)}>
               <FontAwesomeIcon icon={faSquarePlus} />
             </li>
             <li>
