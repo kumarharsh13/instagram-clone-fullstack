@@ -49,7 +49,6 @@ function CreatePostForm({ closeModal }) {
 			formDataToSubmit.append('image', formData.image);
 			formDataToSubmit.append('caption', formData.caption);
 			formDataToSubmit.append('user_id', formData.user_id);
-			console.log(formDataToSubmit)
       const response = await create_post(formDataToSubmit);
       if (response.success) {
         alert("Post Published Successfully!");

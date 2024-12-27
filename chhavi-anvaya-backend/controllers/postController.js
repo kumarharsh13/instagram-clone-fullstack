@@ -1,4 +1,4 @@
-const { User, Post, Like } = require("../models");
+const { User, Post, Like, Comment } = require("../models");
 const upload = require("../middleware/post_image");
 const path = require("path");
 const { where } = require("sequelize");
@@ -50,8 +50,27 @@ const getPosts = async (req, res) => {
         {
           model: Like,
           as: "likes",
-          attributes: ["user_id"],
+					attributes: ["user_id"],
+					include: [
+						{
+							model: User,
+							as: "user",
+							attributes: ["id", "username", "name", "profile_url"],
+						},
+					]
         },
+				{
+					model: Comment,
+					as: "comments",
+					attributes: ["comment"],
+					include: [
+						{
+							model: User,
+							as: "user",
+							attributes: ["id", "username", "name", "profile_url"],
+						},
+					]
+				}
       ],
       order: [["createdAt", "DESC"]],
     });
@@ -138,7 +157,6 @@ const createLike = async (req, res) => {
       where: { post_id: post_id, user_id: user_id },
     });
 
-    console.debug(exisitingLike);
     if (exisitingLike) {
       return res
         .status(400)
@@ -177,6 +195,26 @@ const deleteLike = async (req, res) => {
   }
 };
 
+const createComment = async (req, res) => {
+  try {
+    const { comment, post_id, user_id } = req.body;
+		console.debug(req.body)
+    const newComment = await Comment.create({
+      comment,
+      post_id,
+      user_id,
+    });
+    res.status(200).json({
+      success: true,
+      message: "Comment added successfully",
+      newComment: newComment,
+    });
+  } catch (error) {
+    console.error("Error adding comment");
+    res.status(400).json({ message: "Failed to add comment" });
+  }
+};
+
 module.exports = {
   createPost,
   getPosts,
@@ -184,4 +222,5 @@ module.exports = {
   getFollowingUserPosts,
   createLike,
   deleteLike,
+  createComment,
 };

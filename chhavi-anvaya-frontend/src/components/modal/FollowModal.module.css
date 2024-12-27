@@ -1,0 +1,95 @@
+.modalBackdrop {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+	transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.modalContent {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 30%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.suggestedAccount {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.commentedAccount {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.commentUsername {
+  font-weight: 800;
+}
+
+.commentDesc {
+  margin-left: 6rem;
+  font-size: 2rem;
+}
+
+.accountImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.accountImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.suggestedAccount button {
+  width: 20%;
+}
+
+.accountDetails {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.accountDetails p {
+  font-size: 1.6rem;
+}
+
+.closeButton {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.closeButton:hover {
+  background-color: #e74c3c;
+}

@@ -59,8 +59,9 @@
 }
 
 .likeCounts {
-  font-size: 1.2rem;
+  font-size: 2rem;
   font-weight: 800;
+  cursor: pointer;
 }
 
 .captions {
@@ -74,6 +75,22 @@
   align-items: flex-start;
   gap: 1rem;
   width: 100%;
+}
+
+.addCommentContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.addCommentContainer label {
+  width: 80%;
+}
+
+.addCommentContainer button {
+  width: 20%;
 }
 
 .sugesstionToFollow {

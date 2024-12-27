@@ -86,6 +86,26 @@ const deleteLike = async (post_id, user_id) => {
   }
 };
 
+const createComment = async (values, post_id, user_id) => {
+	try {
+		const response = await axios.post(
+      `${API_URL}/create_comment`,
+      {
+				comment: values.comment,
+        post_id: post_id,
+        user_id: user_id,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+		return response.data
+	} catch (error) {
+		console.error("Error adding comment:", error);
+    throw error;
+	}
+};
+
 export {
   create_post,
   getPosts,
@@ -93,4 +113,5 @@ export {
   getFollowingUserPosts,
   createLike,
   deleteLike,
+	createComment,
 };
