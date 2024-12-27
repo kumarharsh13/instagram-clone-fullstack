@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         through: models.Follow, // The Follow table is the intermediary table
         foreignKey: "follower_id",
         as: "followers", // Alias for users who are being followed
-        otherKey: "follower_id",
+        otherKey: "following_id",
       });
 
       // A User can have many followers (self-referential relationship)
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         through: models.Follow, // The Follow table is the intermediary table
         foreignKey: "following_id",
         as: "followings", // Alias for users who are following
-        otherKey: "following_id",
+        otherKey: "follower_id",
       });
     }
   }

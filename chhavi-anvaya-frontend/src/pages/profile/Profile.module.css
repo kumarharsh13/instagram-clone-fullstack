@@ -58,10 +58,12 @@
 }
 
 .imageContainer {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-.imageContainer>img {
+.imageContainer img {
   width: 100%;
   height: 100%;
 }

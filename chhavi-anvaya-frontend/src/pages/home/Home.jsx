@@ -4,7 +4,7 @@ import { faHeart, faComment } from "@fortawesome/free-regular-svg-icons";
 import { AuthContext } from "../../context/AuthContext";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import styles from "../home/Home.module.css";
-import { getPosts } from "../../services/postService";
+import { getPosts, createLike, deleteLike } from "../../services/postService";
 
 function Home() {
   const { user } = useContext(AuthContext);
@@ -23,14 +23,14 @@ function Home() {
     fetchPosts();
   }, []);
 
-  console.log("Data: " + JSON.stringify(posts));
-  console.log("Count: " + posts.length);
   return (
     user && (
       <div className={styles.home}>
         <div className={styles.feed}>
           {posts.length > 0 ? (
-            posts.map((post) => <PostCard key={post.id} post={post} />)
+            posts.map((post) => (
+              <PostCard key={post.id} post={post} user_id={user.id} />
+            ))
           ) : (
             <p>No Post to Show</p>
           )}
@@ -92,9 +92,32 @@ function Home() {
     )
   );
 
-  function PostCard({ post }) {
-    const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES 
-    const imageUrl = `${IMAGE_URL}${post.image_url}`;
+  function PostCard({ post, user_id }) {
+    const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
+    const [likes, setLike] = useState(post.likes.length || 0);
+    const [isLiked, setIsLiked] = useState(
+      post.likes.some((like) => like.user_id === user_id)
+    );
+    const [animateHeart, setAnimateHeart] = useState(false);
+
+    const handlePostLike = async () => {
+      try {
+        if (isLiked) {
+          await deleteLike(post.id, user_id);
+          setLike(likes - 1);
+          setIsLiked(false);
+        } else {
+          await createLike(post.id, user_id);
+          setLike(likes + 1);
+          setIsLiked(true);
+          setAnimateHeart(true);
+        }
+        setTimeout(() => setAnimateHeart(false), 1000);
+      } catch (error) {
+        console.error("Error liking post: ", error);
+      }
+    };
+
     return (
       <div className={styles.feedContainer}>
         <div className={styles.profilePostedBy}>
@@ -103,14 +126,24 @@ function Home() {
           </div>
           <h3>{post.user.username}</h3>
         </div>
-        <div className={styles.postImageContainer}>
-          <img src={imageUrl} alt={post.id} />
+        <div
+          className={styles.postImageContainer}
+          onDoubleClick={handlePostLike}
+        >
+          <img
+            src={`${IMAGE_URL}${post.image_url}`}
+            alt={post.id}
+            className={animateHeart ? styles.heartAnimation : ""}
+          />
         </div>
         <div className={styles.likeAndCommentIcons}>
-          <FontAwesomeIcon icon={faHeart} />
+          <FontAwesomeIcon
+            icon={isLiked ? faHeartSolid : faHeart}
+            className={isLiked ? styles.liked : ""}
+          />
           <FontAwesomeIcon icon={faComment} />
         </div>
-        <div className={styles.likeCounts}>876 Likes</div>
+        <div className={styles.likeCounts}>{likes} Likes</div>
         <div className={styles.captions}>{post.caption}</div>
         <div className={styles.comments}>
           <p>View all 65 comments</p>

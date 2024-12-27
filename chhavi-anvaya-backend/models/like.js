@@ -22,8 +22,16 @@ module.exports = (sequelize, DataTypes) => {
   }
   Like.init(
     {
-      user_id: DataTypes.INTEGER,
-      post_id: DataTypes.INTEGER,
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: 'user_post_unique',
+      },
+      post_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: 'user_post_unique',
+      },
     },
     {
       sequelize,

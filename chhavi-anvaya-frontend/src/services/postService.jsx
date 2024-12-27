@@ -23,7 +23,6 @@ const getPosts = async () => {
     const response = await axios.get(`${API_URL}/get_posts`, {
       withCredentials: true,
     });
-    console.log(JSON.stringify(response));
     return response.data;
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -55,4 +54,43 @@ const getFollowingUserPosts = async () => {
   }
 };
 
-export { create_post, getPosts, getMyPosts, getFollowingUserPosts };
+const createLike = async (post_id, user_id) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/create_like`,
+      {
+        post_id: post_id,
+        user_id: user_id,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching posts likes:", error);
+    throw error;
+  }
+};
+
+const deleteLike = async (post_id, user_id) => {
+  try {
+    const response = await axios.delete(`${API_URL}/delete_like`, {
+      data: { post_id: post_id, user_id: user_id },
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching posts likes:", error);
+    throw error;
+  }
+};
+
+export {
+  create_post,
+  getPosts,
+  getMyPosts,
+  getFollowingUserPosts,
+  createLike,
+  deleteLike,
+};

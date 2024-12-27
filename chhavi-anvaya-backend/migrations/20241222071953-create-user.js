@@ -35,6 +35,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
         unique: true,
+        defaultValue: null,
       },
       verification: {
         type: Sequelize.DataTypes.BOOLEAN,
