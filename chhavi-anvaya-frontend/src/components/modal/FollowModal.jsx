@@ -1,10 +1,10 @@
 import styles from "./FollowModal.module.css";
 
-function FollowModal({ isVisible, handleLikeModal, users, heading }) {
+function FollowModal({ isVisible, handleModal, users, heading }) {
   if (!isVisible) return null;
 
   const closeModal = () => {
-    handleLikeModal(false);
+    handleModal(false);
   };
 
   return (

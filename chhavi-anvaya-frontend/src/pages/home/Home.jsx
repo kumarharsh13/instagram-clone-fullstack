@@ -6,13 +6,26 @@ import { faHeart, faComment } from "@fortawesome/free-regular-svg-icons";
 import { AuthContext } from "../../context/AuthContext";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import styles from "../home/Home.module.css";
-import { FollowModal as LikeModal }  from "../../components/modal/FollowModal";
+import { FollowModal as LikeModal } from "../../components/modal/FollowModal";
 import { CommentModal } from "../../components/modal/CommentModal";
-import { getPosts, createLike, deleteLike, createComment } from "../../services/postService";
+import {
+  getPosts,
+  createLike,
+  deleteLike,
+  createComment,
+} from "../../services/postService";
+import { getFollowSuggestion, createFollow, deleteFollow } from "../../services/followService";
 
 function Home() {
   const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
+  const [suggestFollow, setSuggestFollow] = useState([]);
+  const [isSuggest, setIsSuggest] = useState(false);
+  const [followState, setFollowState] = useState({});
+
+  const handleFollowSuggestion = (value) => {
+    setIsSuggest(value);
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -26,6 +39,43 @@ function Home() {
 
     fetchPosts();
   }, []);
+
+  useEffect(() => {
+    const fetchFollowSuggestion = async () => {
+      try {
+        const response = await getFollowSuggestion(user.id);
+        setSuggestFollow(response.suggestionFollow);
+
+        const initialFollowState = {};
+        response.suggestionFollow.forEach((user) => {
+          initialFollowState[user.id] = false;
+        });
+        setFollowState(initialFollowState);
+      } catch (error) {
+        console.error("Error fetching follow suggestion:", error);
+      }
+    };
+    fetchFollowSuggestion();
+  }, [user.id]);
+
+
+  const handleFollow = async (targetUserId) => {
+    try {
+      const currentState = followState[targetUserId];
+      if (currentState) {
+        await deleteFollow(user.id, targetUserId);
+      } else {
+        await createFollow(user.id, targetUserId);
+      }
+
+      setFollowState((prev) => ({
+        ...prev,
+        [targetUserId]: !currentState,
+      }));
+    } catch (error) {
+      console.error('Error while following/unfollowing:', error);
+    }
+  };
 
   return (
     user && (
@@ -41,61 +91,44 @@ function Home() {
         </div>
         <div className={styles.sugesstionToFollow}>
           <div className={styles.suggestionTextLink}>
-            <p>Sugeestion for you</p>
-            <a href="http://www.google.com" target="_blank">
+            <p>Suggestion</p>
+            <button onClick={() => handleFollowSuggestion(true)}>
               See All
-            </a>
+            </button>
+            <LikeModal
+              isVisible={isSuggest}
+              handleModal={handleFollowSuggestion}
+              users={suggestFollow}
+              heading={"Suggestion to follow"}
+            />
           </div>
-          <div className={styles.suggestedAccount}>
-            <div className={styles.accountDetails}>
-              <div className={styles.accountImage}>
-                <img src="../../croissant.jpg" alt="" />
-              </div>
-              <p>gajodhar</p>
-            </div>
-            <button>Follow</button>
-          </div>
-          <div className={styles.suggestedAccount}>
-            <div className={styles.accountDetails}>
-              <div className={styles.accountImage}>
-                <img src="../../croissant.jpg" alt="" />
-              </div>
-              <p>gajodhar</p>
-            </div>
-            <button>Follow</button>
-          </div>
-          <div className={styles.suggestedAccount}>
-            <div className={styles.accountDetails}>
-              <div className={styles.accountImage}>
-                <img src="../../croissant.jpg" alt="" />
-              </div>
-              <p>gajodhar</p>
-            </div>
-            <button>Follow</button>
-          </div>
-          <div className={styles.suggestedAccount}>
-            <div className={styles.accountDetails}>
-              <div className={styles.accountImage}>
-                <img src="../../croissant.jpg" alt="" />
-              </div>
-              <p>gajodhar</p>
-            </div>
-            <button>Follow</button>
-          </div>
-          <div className={styles.suggestedAccount}>
-            <div className={styles.accountDetails}>
-              <div className={styles.accountImage}>
-                <img src="../../croissant.jpg" alt="" />
-              </div>
-              <p>gajodhar</p>
-            </div>
-            <button>Follow</button>
-          </div>
+          {suggestFollow && suggestFollow.length > 0 ? (
+            suggestFollow.map((follow) => {
+              const isFollowing = followState[follow.id] || false;
+              return (
+                <div className={styles.suggestedAccount} key={follow.id}>
+                  <div className={styles.accountDetails}>
+                    <div className={styles.accountImage}>
+                      <img
+                        src={follow.profile_url || "../../croissant.jpg"}
+                        alt={follow.username}
+                      />
+                    </div>
+                    <p>{follow.username}</p>
+                  </div>
+                  <button onClick={() => handleFollow(follow.id)} className={isFollowing ? styles.unfollow : ""}>
+                    {isFollowing ? "Unfollow" : "Follow"}
+                  </button>{" "}
+                </div>
+              );
+            })
+          ) : (
+            <p>No suggestions available</p>
+          )}
         </div>
       </div>
     )
   );
-
 
   function PostCard({ post, user_id }) {
     const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
@@ -105,16 +138,16 @@ function Home() {
       post.likes.some((like) => like.user_id === user_id)
     );
     const [animateHeart, setAnimateHeart] = useState(false);
-    const [isLike, setIsLike] = useState(false)
-    const [isComment, setIsComment] = useState(false)
+    const [isLike, setIsLike] = useState(false);
+    const [isComment, setIsComment] = useState(false);
 
     const handleLikeModal = (value) => {
-      setIsLike(value)
-    }
+      setIsLike(value);
+    };
 
     const handleCommentModal = (value) => {
-      setIsComment(value)
-    }
+      setIsComment(value);
+    };
 
     const validationSchema = Yup.object({
       comment: Yup.string().required("Comment Required"),
@@ -128,10 +161,10 @@ function Home() {
       onSubmit: async (values, { resetForm }) => {
         try {
           const response = await createComment(values, post.id, user_id);
-          
+
           if (response.success) {
             alert("Comment Successfully");
-            setComments(comments + 1)
+            setComments(comments + 1);
             resetForm();
           } else {
             alert(response.message || "Failed to post comment");
@@ -184,12 +217,32 @@ function Home() {
             icon={isLiked ? faHeartSolid : faHeart}
             className={isLiked ? styles.liked : ""}
           />
-          <div className={styles.likeCounts} onClick={() => handleLikeModal(true)} >{likes > 0 ? likes : ""}</div>
+          <div
+            className={styles.likeCounts}
+            onClick={() => handleLikeModal(true)}
+          >
+            {likes > 0 ? likes : ""}
+          </div>
           <FontAwesomeIcon icon={faComment} />
-          <div className={styles.likeCounts} onClick={() => handleCommentModal(true)} >{comments > 0 ? comments : 0 }</div>
+          <div
+            className={styles.likeCounts}
+            onClick={() => handleCommentModal(true)}
+          >
+            {comments > 0 ? comments : 0}
+          </div>
         </div>
-        <LikeModal isVisible={isLike} handleLikeModal={handleLikeModal} users={post.likes} heading={"Likes"}/>
-        <CommentModal isVisible={isComment} handleCommentModal={handleCommentModal} users={post.comments} heading={"Comments"}/>
+        <LikeModal
+          isVisible={isLike}
+          handleModal={handleLikeModal}
+          users={post.likes}
+          heading={"Likes"}
+        />
+        <CommentModal
+          isVisible={isComment}
+          handleModal={handleCommentModal}
+          users={post.comments}
+          heading={"Comments"}
+        />
         <div className={styles.captions}>{post.caption}</div>
         <div className={styles.comments}>
           <form
@@ -207,9 +260,7 @@ function Home() {
                 onBlur={formik.handleBlur}
                 value={formik.values.comment}
                 className={
-                  formik.touched.comment && formik.errors.comment
-                    ? "error"
-                    : ""
+                  formik.touched.comment && formik.errors.comment ? "error" : ""
                 }
               />
               {formik.touched.comment && formik.errors.comment && (

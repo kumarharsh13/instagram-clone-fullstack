@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { User } = require("../models");
+const { User, Follow } = require("../models");
 
 const signUp = async (req, res) => {
   const { email, username, password, mobile, fullName } = req.body;
@@ -21,6 +21,18 @@ const signUp = async (req, res) => {
       mobile,
       name: fullName,
     });
+
+    const defaultToFollow = await User.findOne({
+      where: {
+        username: "chhavi_anvaya"
+      },
+      attributes: ["id"],
+    })
+
+    await Follow.create({
+      follower_id: newUser.id,
+      following_id: defaultToFollow.id
+    })
 
     res.status(201).json({ success: true, user: newUser });
   } catch (error) {

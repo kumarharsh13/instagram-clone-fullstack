@@ -50,27 +50,27 @@ const getPosts = async (req, res) => {
         {
           model: Like,
           as: "likes",
-					attributes: ["user_id"],
-					include: [
-						{
-							model: User,
-							as: "user",
-							attributes: ["id", "username", "name", "profile_url"],
-						},
-					]
+          attributes: ["user_id"],
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["id", "username", "name", "profile_url"],
+            },
+          ],
         },
-				{
-					model: Comment,
-					as: "comments",
-					attributes: ["comment"],
-					include: [
-						{
-							model: User,
-							as: "user",
-							attributes: ["id", "username", "name", "profile_url"],
-						},
-					]
-				}
+        {
+          model: Comment,
+          as: "comments",
+          attributes: ["comment"],
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["id", "username", "name", "profile_url"],
+            },
+          ],
+        },
       ],
       order: [["createdAt", "DESC"]],
     });
@@ -93,9 +93,6 @@ const getMyPosts = async (req, res) => {
 
   try {
     const posts = await Post.findAll({
-      where: {
-        user_id: user_id,
-      },
       include: [
         {
           model: User,
@@ -106,6 +103,25 @@ const getMyPosts = async (req, res) => {
           model: Like,
           as: "likes",
           attributes: ["user_id"],
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["id", "username", "name", "profile_url"],
+            },
+          ],
+        },
+        {
+          model: Comment,
+          as: "comments",
+          attributes: ["comment"],
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["id", "username", "name", "profile_url"],
+            },
+          ],
         },
       ],
       order: [["createdAt", "DESC"]],
@@ -198,7 +214,7 @@ const deleteLike = async (req, res) => {
 const createComment = async (req, res) => {
   try {
     const { comment, post_id, user_id } = req.body;
-		console.debug(req.body)
+    console.debug(req.body);
     const newComment = await Comment.create({
       comment,
       post_id,

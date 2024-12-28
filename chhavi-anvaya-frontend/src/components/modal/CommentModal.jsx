@@ -1,10 +1,10 @@
 import styles from "./FollowModal.module.css";
 
-function CommentModal({ isVisible, handleCommentModal, users, heading }) {
+function CommentModal({ isVisible, handleModal, users, heading }) {
 	if (!isVisible) return null;
 
 	const closeModal = () => {
-		handleCommentModal(false);
+		handleModal(false);
 	};
 
 	return (
