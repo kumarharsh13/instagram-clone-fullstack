@@ -43,6 +43,10 @@
   font-size: 1.8rem;
 }
 
+.followerCount, .followingCount {
+  cursor: pointer;
+}
+
 .bio {
   font-size: 1.6rem;
   text-align: justify;

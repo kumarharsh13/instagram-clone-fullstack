@@ -3,6 +3,8 @@ import styles from "../profile/Profile.module.css";
 import { AuthContext } from "../../context/AuthContext";
 import { getMyPosts } from "../../services/postService";
 import { useContext, useEffect, useState } from "react";
+import { FollowModal } from "../../components/modal/FollowModal";
+import { getFollowers, getFollowing } from "../../services/followService";
 
 function Profile() {
   const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
@@ -54,6 +56,43 @@ function Profile() {
   }
 
   function ProfileCard({ username, posts, bio, isOwnProfile }) {
+    const [follwer, setFollower] = useState([]);
+    const [following, setFollowing] = useState([]);
+    const [isFollower, setIsFollower] = useState(false);
+    const [isFollowing, setIsFollowing] = useState(false);
+
+    const handleFollower = (value) => {
+      setIsFollower(value);
+    };
+
+    const handleFollowing = (value) => {
+      setIsFollowing(value);
+    };
+
+    useEffect(() => {
+      const follower = async () => {
+        try {
+          const response = await getFollowers(username);
+          setFollower(response.data);
+        } catch (error) {
+          console.error("Unable to fetch follower", error);
+        }
+      };
+      follower();
+    }, [username]);
+
+    useEffect(() => {
+      const following = async () => {
+        try {
+          const response = await getFollowing(username);
+          setFollowing(response.data);
+        } catch (error) {
+          console.error("Unable to fetch follower", error);
+        }
+      };
+      following();
+    }, [username]);
+
     return (
       <div className={styles.profileInfo}>
         <div className={styles.profilePicture}>
@@ -73,8 +112,30 @@ function Profile() {
           </div>
           <div className={styles.postsAndFollows}>
             <div className={styles.postsCount}>{posts.length} Posts</div>
-            <div className={styles.followerCount}>200 Followers</div>
-            <div className={styles.followingCount}>250 Following</div>
+            <div
+              className={styles.followerCount}
+              onClick={() => handleFollower(true)}
+            >
+              200 Followers
+            </div>
+            <div
+              className={styles.followingCount}
+              onClick={() => handleFollowing(true)}
+            >
+              250 Following
+            </div>
+            <FollowModal
+              isVisible={isFollower}
+              handleModal={handleFollower}
+              users={follwer}
+              heading={"Followers"}
+            />
+            <FollowModal
+              isVisible={isFollowing}
+              handleModal={handleFollowing}
+              users={following}
+              heading={"Following"}
+            />
           </div>
           <div className={styles.bio}>{bio}</div>
         </div>
