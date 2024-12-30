@@ -27,7 +27,7 @@ const createFollow = async (follower_id, following_id) => {
 const getFollowers = async (username) => {
   try {
     const response = await axios.get(`${API_URL}/get_followers`, {
-      data: { username },
+      params: { username },
       withCredentials: true,
     });
     return response.data;
@@ -39,8 +39,8 @@ const getFollowers = async (username) => {
 
 const getFollowing = async (username) => {
   try {
-    const response = await axios.get(`${API_URL}/get_following`, {
-      data: { username },
+    const response = await axios.get(`${API_URL}/get_followings`, {
+      params: { username },
       withCredentials: true,
     });
     return response.data;

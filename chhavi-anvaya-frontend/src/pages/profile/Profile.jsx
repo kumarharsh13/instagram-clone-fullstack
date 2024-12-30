@@ -73,7 +73,7 @@ function Profile() {
       const follower = async () => {
         try {
           const response = await getFollowers(username);
-          setFollower(response.data);
+          setFollower(response.myFollowers);
         } catch (error) {
           console.error("Unable to fetch follower", error);
         }
@@ -85,7 +85,7 @@ function Profile() {
       const following = async () => {
         try {
           const response = await getFollowing(username);
-          setFollowing(response.data);
+          setFollowing(response.myFollowings);
         } catch (error) {
           console.error("Unable to fetch follower", error);
         }
@@ -111,18 +111,18 @@ function Profile() {
             )}
           </div>
           <div className={styles.postsAndFollows}>
-            <div className={styles.postsCount}>{posts.length} Posts</div>
+            <div className={styles.postsCount}>{posts.length || 0} Posts</div>
             <div
               className={styles.followerCount}
               onClick={() => handleFollower(true)}
             >
-              200 Followers
+              {follwer.length || 0}  Followers
             </div>
             <div
               className={styles.followingCount}
               onClick={() => handleFollowing(true)}
             >
-              250 Following
+              {following.length || 0} Following
             </div>
             <FollowModal
               isVisible={isFollower}

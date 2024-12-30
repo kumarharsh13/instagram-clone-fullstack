@@ -11,7 +11,6 @@ const createFollow = async (req, res) => {
       },
     });
 
-    console.debug(checkForAlreadyFollowing);
     if (checkForAlreadyFollowing)
       return res.status(400).json({ message: "Already Following" });
 
@@ -30,14 +29,71 @@ const createFollow = async (req, res) => {
   }
 };
 
-const getFollowers = async (req, res) => {
+const getFollowings = async (req, res) => {
+  const { username } = req.query;
   try {
-  } catch (error) {}
+    const user = await User.findOne({
+      where: { username },
+      attributes: ["id"],
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const myFollowings = await Follow.findAll({
+      where: { follower_id: user.id },
+      include: [
+        {
+          model: User,
+          as: "following",
+          attributes: ["id", "username", "name", "profile_url"],
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      message: "Follower fetched successfully.",
+      myFollowings,
+    });
+  } catch (error) {
+    console.error("Unable to fetch follower", error);
+    res.status(500).json({ message: "Unable to fetch follower" });
+  }
 };
 
-const getFollowing = async (req, res) => {
+const getFollowers = async (req, res) => {
+  const { username } = req.query;
+
   try {
-  } catch (error) {}
+    const user = await User.findOne({
+      where: { username },
+      attributes: ["id"],
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const myFollowers = await Follow.findAll({
+      where: { following_id: user.id },
+      include: [
+        {
+          model: User,
+          as: "follower",
+          attributes: ["id", "username", "name", "profile_url"],
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      message: "Follower fetched successfully.",
+      myFollowers,
+    });
+  } catch (error) {
+    console.error("Unable to fetch follower", error);
+    res.status(500).json({ message: "Unable to fetch follower" });
+  }
 };
 
 const getFollowSuggestion = async (req, res) => {
@@ -115,7 +171,7 @@ const deleteFollow = async (req, res) => {
 module.exports = {
   createFollow,
   getFollowers,
-  getFollowing,
+  getFollowings,
   getFollowSuggestion,
   mutualFollowing,
   deleteFollow,

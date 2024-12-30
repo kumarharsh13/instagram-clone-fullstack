@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useFormik } from "formik";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from "@fortawesome/free-regular-svg-icons";
@@ -14,7 +15,11 @@ import {
   deleteLike,
   createComment,
 } from "../../services/postService";
-import { getFollowSuggestion, createFollow, deleteFollow } from "../../services/followService";
+import {
+  getFollowSuggestion,
+  createFollow,
+  deleteFollow,
+} from "../../services/followService";
 
 function Home() {
   const { user } = useContext(AuthContext);
@@ -58,7 +63,6 @@ function Home() {
     fetchFollowSuggestion();
   }, [user.id]);
 
-
   const handleFollow = async (targetUserId) => {
     try {
       const currentState = followState[targetUserId];
@@ -73,7 +77,7 @@ function Home() {
         [targetUserId]: !currentState,
       }));
     } catch (error) {
-      console.error('Error while following/unfollowing:', error);
+      console.error("Error while following/unfollowing:", error);
     }
   };
 
@@ -114,9 +118,15 @@ function Home() {
                         alt={follow.username}
                       />
                     </div>
-                    <p>{follow.username}</p>
+                    <Link to={`/profile/${follow.username}`}>
+                      {" "}
+                      <p>{follow.username}</p>
+                    </Link>
                   </div>
-                  <button onClick={() => handleFollow(follow.id)} className={isFollowing ? styles.unfollow : ""}>
+                  <button
+                    onClick={() => handleFollow(follow.id)}
+                    className={isFollowing ? styles.unfollow : ""}
+                  >
                     {isFollowing ? "Unfollow" : "Follow"}
                   </button>{" "}
                 </div>

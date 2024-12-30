@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styles from "./FollowModal.module.css";
 
 function CommentModal({ isVisible, handleModal, users, heading }) {
@@ -18,7 +19,9 @@ function CommentModal({ isVisible, handleModal, users, heading }) {
 								<div className={styles.accountImage}>
 									<img src="../../croissant.jpg" alt="Commented Account" />
 								</div>
-								<p className={styles.commentUsername}>{user.user.username}</p>
+								<Link to={`/profile/${user.user.username}`}>
+									<p className={styles.commentUsername}>{user.user.username}</p>
+                </Link>
 							</div>
 							<p className={styles.commentDesc}>{user.comment}</p>
 						</div>

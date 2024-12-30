@@ -43,7 +43,8 @@
   font-size: 1.8rem;
 }
 
-.followerCount, .followingCount {
+.followerCount,
+.followingCount {
   cursor: pointer;
 }
 
@@ -70,4 +71,9 @@
 .imageContainer img {
   width: 100%;
   height: 100%;
+}
+
+.unfollow {
+  color: var(--button-link-color) !important;
+  background-color: var(--primary-backgroud) !important;
 }

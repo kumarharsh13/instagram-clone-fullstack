@@ -4,7 +4,7 @@ const authenticateToken = require("../middleware/authenticateToken");
 
 const {
   getFollowers,
-  getFollowing,
+  getFollowings,
   createFollow,
   deleteFollow,
   mutualFollowing,
@@ -12,7 +12,7 @@ const {
 } = require("../controllers/followController");
 
 router.get("/get_followers", authenticateToken, getFollowers);
-router.get("/get_followings", authenticateToken, getFollowing);
+router.get("/get_followings", authenticateToken, getFollowings);
 router.get("/mutual_following", authenticateToken, mutualFollowing);
 router.get("/get_follow_suggestion", authenticateToken, getFollowSuggestion);
 router.post("/create_follow", createFollow);

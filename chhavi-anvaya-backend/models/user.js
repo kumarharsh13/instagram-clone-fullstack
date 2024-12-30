@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsToMany(models.User, {
         through: models.Follow, // The Follow table is the intermediary table
         foreignKey: "follower_id",
-        as: "followers", // Alias for users who are being followed
+        as: "followings", // Alias for users who are being followed
         otherKey: "following_id",
       });
 
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsToMany(models.User, {
         through: models.Follow, // The Follow table is the intermediary table
         foreignKey: "following_id",
-        as: "followings", // Alias for users who are following
+        as: "followers", // Alias for users who are following
         otherKey: "follower_id",
       });
     }
