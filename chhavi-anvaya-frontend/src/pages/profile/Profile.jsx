@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import styles from "../profile/Profile.module.css";
 import { AuthContext } from "../../context/AuthContext";
-import { getMyPosts } from "../../services/postService";
+import { getMyPosts, getFollowingUserPosts } from "../../services/postService";
 import { useContext, useEffect, useState } from "react";
 import { FollowModal } from "../../components/modal/FollowModal";
 import { getFollowers, getFollowing } from "../../services/followService";
@@ -24,10 +24,24 @@ function Profile() {
     fetchPosts();
   }, []);
 
+  const [otherUserPost, setOtherUserPost] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await getFollowingUserPosts();
+        setOtherUserPost(response.posts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+    fetchPosts();
+  }, []);
+
   return user && username === user.username ? (
     <MyProfile username={user.username} myPost={myPost} />
   ) : (
-    <OtherUserProfile username={username} />
+    <OtherUserProfile username={username} otherUserPost={otherUserPost} />
   );
 
   function MyProfile({ username, myPost }) {
@@ -48,7 +62,7 @@ function Profile() {
               </div>
             ))
           ) : (
-            <p>No posts to show</p>
+            <p className={styles.noPost}>No posts to show</p>
           )}
         </div>
       </div>
@@ -103,9 +117,19 @@ function Profile() {
         <div className={styles.profileDetails}>
           <div className={styles.nameAndOptions}>
             <h3>{username}</h3>
-            {isOwnProfile && (
+            {isOwnProfile ? (
               <>
                 <button>Edit</button>
+                <button>Options</button>
+              </>
+            ) : (
+              <>
+                {" "}
+                {isFollower ? (
+                  <button>Unfollow</button>
+                ) : (
+                  <button>Follow</button>
+                )}
                 <button>Options</button>
               </>
             )}
@@ -116,7 +140,7 @@ function Profile() {
               className={styles.followerCount}
               onClick={() => handleFollower(true)}
             >
-              {follwer.length || 0}  Followers
+              {follwer.length || 0} Followers
             </div>
             <div
               className={styles.followingCount}
@@ -143,27 +167,26 @@ function Profile() {
     );
   }
 
-  function OtherUserProfile({ username }) {
+  function OtherUserProfile({ username, otherUserPost }) {
     return (
       <div className={styles.profile}>
         <ProfileCard
           username={username}
-          posts={[]}
+          posts={otherUserPost}
           bio="This user has no bio."
           isOwnProfile={false}
         />
         <hr />
         <div className={styles.userPost}>
-          {/* Example of posts for another user, you could populate this from API */}
-          <div className={styles.imageContainer}>
-            <img src="../../croissant.jpg" alt="" />
-          </div>
-          <div className={styles.imageContainer}>
-            <img src="../../croissant.jpg" alt="" />
-          </div>
-          <div className={styles.imageContainer}>
-            <img src="../../croissant.jpg" alt="" />
-          </div>
+          {otherUserPost.length > 0 ? (
+            otherUserPost.map((post) => (
+              <div className={styles.imageContainer} key={post.id}>
+                <img src={`${IMAGE_URL}${post.image_url}`} alt={post.id} />
+              </div>
+            ))
+          ) : (
+            <p className={styles.noPost}>No posts to show</p>
+          )}
         </div>
       </div>
     );

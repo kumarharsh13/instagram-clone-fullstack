@@ -44,7 +44,7 @@ const getMyPosts = async () => {
 
 const getFollowingUserPosts = async () => {
   try {
-    const response = await axios.get(`${API_URL}/get_following_posts`, {
+    const response = await axios.get(`${API_URL}/get_following_user_posts`, {
       withCredentials: true,
     });
     return response.data;

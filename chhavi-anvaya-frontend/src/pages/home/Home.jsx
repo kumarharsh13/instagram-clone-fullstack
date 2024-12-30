@@ -10,23 +10,22 @@ import styles from "../home/Home.module.css";
 import { FollowModal as LikeModal } from "../../components/modal/FollowModal";
 import { CommentModal } from "../../components/modal/CommentModal";
 import {
-  getPosts,
+  getFollowingUserPosts,
   createLike,
   deleteLike,
   createComment,
 } from "../../services/postService";
 import {
   getFollowSuggestion,
-  createFollow,
-  deleteFollow,
 } from "../../services/followService";
+import { useFollow } from '../../hooks/useFollow'
 
 function Home() {
   const { user } = useContext(AuthContext);
+  const { followState, setFollowState, handleFollow } = useFollow();
   const [posts, setPosts] = useState([]);
-  const [suggestFollow, setSuggestFollow] = useState([]);
   const [isSuggest, setIsSuggest] = useState(false);
-  const [followState, setFollowState] = useState({});
+  const [suggestFollow, setSuggestFollow] = useState([]);
 
   const handleFollowSuggestion = (value) => {
     setIsSuggest(value);
@@ -35,7 +34,7 @@ function Home() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await getPosts();
+        const response = await getFollowingUserPosts();
         setPosts(response.posts);
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -61,25 +60,7 @@ function Home() {
       }
     };
     fetchFollowSuggestion();
-  }, [user.id]);
-
-  const handleFollow = async (targetUserId) => {
-    try {
-      const currentState = followState[targetUserId];
-      if (currentState) {
-        await deleteFollow(user.id, targetUserId);
-      } else {
-        await createFollow(user.id, targetUserId);
-      }
-
-      setFollowState((prev) => ({
-        ...prev,
-        [targetUserId]: !currentState,
-      }));
-    } catch (error) {
-      console.error("Error while following/unfollowing:", error);
-    }
-  };
+  }, [user, setFollowState]);
 
   return (
     user && (
@@ -90,7 +71,7 @@ function Home() {
               <PostCard key={post.id} post={post} user_id={user.id} />
             ))
           ) : (
-            <p>No Post to Show</p>
+            <p className={styles.noPost}>Follow to CatchUp</p>
           )}
         </div>
         <div className={styles.sugesstionToFollow}>
@@ -210,7 +191,9 @@ function Home() {
           <div className={styles.profilePostedByImage}>
             <img src="../../croissant.jpg" alt="" />
           </div>
-          <h3>{post.user.username}</h3>
+          <Link to={`/profile/${post.user.username}`}>
+            <h3>{post.user.username}</h3>
+          </Link>
         </div>
         <div
           className={styles.postImageContainer}

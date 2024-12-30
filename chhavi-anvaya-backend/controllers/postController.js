@@ -1,4 +1,4 @@
-const { User, Post, Like, Comment } = require("../models");
+const { User, Post, Like, Comment, Follow } = require("../models");
 const upload = require("../middleware/post_image");
 const path = require("path");
 const { where } = require("sequelize");
@@ -93,6 +93,9 @@ const getMyPosts = async (req, res) => {
 
   try {
     const posts = await Post.findAll({
+      where: {
+        user_id: user_id
+      },
       include: [
         {
           model: User,
@@ -138,8 +141,25 @@ const getMyPosts = async (req, res) => {
 };
 
 const getFollowingUserPosts = async (req, res) => {
+  const user_id = req.user && req.user.id;
+  if (!user_id) {
+    return res.status(401).json({ message: "Unauthorized. Please log in." });
+  }
+
   try {
+    const followingUser = await Follow.findAll({
+      where: {
+        follower_id: user_id,
+      },
+      attributes: ["following_id"],
+    });
+
+    const followedUserIds = followingUser.map((follow) => follow.following_id);
+
     const posts = await Post.findAll({
+      where: {
+        user_id: followedUserIds
+      },
       include: [
         {
           model: User,
@@ -150,10 +170,30 @@ const getFollowingUserPosts = async (req, res) => {
           model: Like,
           as: "likes",
           attributes: ["user_id"],
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["id", "username", "name", "profile_url"],
+            },
+          ],
+        },
+        {
+          model: Comment,
+          as: "comments",
+          attributes: ["comment"],
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["id", "username", "name", "profile_url"],
+            },
+          ],
         },
       ],
       order: [["createdAt", "DESC"]],
     });
+
 
     return res.status(200).json({
       success: true,

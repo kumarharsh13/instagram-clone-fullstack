@@ -1,78 +1,51 @@
 import { Link } from "react-router-dom";
 import styles from "./FollowModal.module.css";
-import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import { createFollow, deleteFollow } from "../../services/followService";
+import { useEffect } from "react";
+import { useFollow } from '../../hooks/useFollow';
 
 function FollowModal({ isVisible, handleModal, users, heading }) {
-  const [removeFollower, setRemoveFollower] = useState({});
-  const [unfollowFollowing, setUnfollowFollowing] = useState({});
-  const { user } = useContext(AuthContext);
-
+  const { followState, setFollowState, handleFollow } = useFollow();
   useEffect(() => {
-    const initialFollowerList = {};
-    const initialFollowingList = {};
+    const initialFollowState = {};
 
     users.forEach((user) => {
-      if (user.follower) {
-        initialFollowerList[user.follower.id] = false; // False means not removed
+      // Add to followState for followers
+      if (user?.follower?.id) {
+        initialFollowState[user.follower.id] = false;
       }
-      if (user.following) {
-        initialFollowingList[user.following.id] = false; // False means not unfollowed
+
+      // Add to followState for following
+      if (user?.following?.id) {
+        initialFollowState[user.following.id] = true;
+      }
+
+      // Add to followState for suggestions
+      if (user?.id) {
+        initialFollowState[user.id] = false;
       }
     });
 
-    setRemoveFollower(initialFollowerList);
-    setUnfollowFollowing(initialFollowingList);
-  }, [users]);
+    setFollowState(initialFollowState);
+  }, [users, setFollowState]);
 
+  console.log(followState)
   const closeModal = () => {
     handleModal(false);
   };
 
-  const handleFollow = async (userIdToToggle, isFollower) => {
-    if (isFollower) {
-      try {
-        const currentState = removeFollower[userIdToToggle];
-        if (currentState) {
-          await createFollow(userIdToToggle, user.id);
-        } else {
-          await deleteFollow(userIdToToggle, user.id);
-        }
-        setRemoveFollower((prev) => ({
-          ...prev,
-          [userIdToToggle]: !prev[userIdToToggle],
-        }));
-      } catch (error) {
-        console.error("Error while following/unfollowing:", error);
-      }
-    } else {
-      try {
-        const currentState = unfollowFollowing[userIdToToggle];
-        if (currentState) {
-          await createFollow(user.id, userIdToToggle);
-        } else {
-          await deleteFollow(user.id, userIdToToggle);
-        }
-        setUnfollowFollowing((prev) => ({
-          ...prev,
-          [userIdToToggle]: !prev[userIdToToggle],
-        }));
-      } catch (error) {
-        console.error("Error while following/unfollowing:", error);
-      }
-    }
+  const handleFollowClick = (userId, isRemoved) => {
+    handleFollow(userId, isRemoved);
   };
 
   if (!isVisible) return null;
 
-  console.log(users)
   return (
     <div className={styles.modalBackdrop}>
       <div className={styles.modalContent}>
         <h1>{heading}</h1>
         {users.map((user, index) => {
           const user_name =
+            user?.username ||
             user?.user?.username ||
             user?.follower?.username ||
             user?.following?.username ||
@@ -80,7 +53,15 @@ function FollowModal({ isVisible, handleModal, users, heading }) {
 
           const isFollower = user?.follower?.username;
           const isFollowing = user?.following?.username;
-          const userIdToToggle = isFollower ? user?.follower?.id : user?.following?.id;
+          const isSuggestionToFollow = user?.username;
+
+          const userIdToToggle = isFollower
+            ? user?.follower?.id
+            : isFollowing
+            ? user?.following?.id
+            : isSuggestionToFollow
+            ? user?.id
+            : null;
 
           return (
             <div className={styles.suggestedAccount} key={index}>
@@ -92,21 +73,31 @@ function FollowModal({ isVisible, handleModal, users, heading }) {
                   <p>{user_name}</p>
                 </Link>
               </div>
-              {isFollower && (
+
+              {isFollower && userIdToToggle && (
                 <button
-                  onClick={() => handleFollow(userIdToToggle, true)}
-                  className={removeFollower[userIdToToggle] ? styles.unfollow : ""}
+                  onClick={() => handleFollowClick(userIdToToggle, true)}
+                  className={followState[userIdToToggle] ? styles.unfollow : ""}
                 >
-                  {removeFollower[userIdToToggle] ? "Follow" : "Remove"}
+                  {followState[userIdToToggle] ? "Follow" : "Remove"}
                 </button>
               )}
 
-              {isFollowing && (
+              {isFollowing && userIdToToggle && (
                 <button
-                  onClick={() => handleFollow(userIdToToggle, false)}
-                  className={unfollowFollowing[userIdToToggle] ? styles.unfollow : ""}
+                  onClick={() => handleFollowClick(userIdToToggle)}
+                  className={followState[userIdToToggle] ? styles.unfollow : ""}
                 >
-                  {unfollowFollowing[userIdToToggle] ? "Follow" : "Unfollow"}
+                  {followState[userIdToToggle] ? "Unollow" : "Follow"}
+                </button>
+              )}
+
+              {isSuggestionToFollow && userIdToToggle && (
+                <button
+                  onClick={() => handleFollowClick(userIdToToggle)}
+                  className={followState[userIdToToggle] ? styles.unfollow : ""}
+                >
+                  {followState[userIdToToggle] ? "Unfollow" : "Follow"}
                 </button>
               )}
             </div>

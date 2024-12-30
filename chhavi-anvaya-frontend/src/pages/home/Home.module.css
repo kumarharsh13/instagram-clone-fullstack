@@ -136,6 +136,10 @@
   font-size: 1.6rem;
 }
 
+.noPost {
+  font-size: 4rem;
+}
+
 .liked {
   color: var(--heart-icon);
 }
