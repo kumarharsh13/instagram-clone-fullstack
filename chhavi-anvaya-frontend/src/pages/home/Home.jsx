@@ -11,14 +11,11 @@ import { FollowModal as LikeModal } from "../../components/modal/FollowModal";
 import { CommentModal } from "../../components/modal/CommentModal";
 import {
   getFollowingUserPosts,
-  createLike,
-  deleteLike,
   createComment,
 } from "../../services/postService";
-import {
-  getFollowSuggestion,
-} from "../../services/followService";
-import { useFollow } from '../../hooks/useFollow'
+import { getFollowSuggestion } from "../../services/followService";
+import { useFollow } from "../../hooks/useFollow";
+import { useLike } from "../../hooks/useLike";
 
 function Home() {
   const { user } = useContext(AuthContext);
@@ -128,9 +125,9 @@ function Home() {
     const [isLiked, setIsLiked] = useState(
       post.likes.some((like) => like.user_id === user_id)
     );
-    const [animateHeart, setAnimateHeart] = useState(false);
     const [isLike, setIsLike] = useState(false);
     const [isComment, setIsComment] = useState(false);
+    const { animateHeart, updateLikes } = useLike();
 
     const handleLikeModal = (value) => {
       setIsLike(value);
@@ -167,24 +164,6 @@ function Home() {
       },
     });
 
-    const handlePostLike = async () => {
-      try {
-        if (isLiked) {
-          await deleteLike(post.id, user_id);
-          setLike(likes - 1);
-          setIsLiked(false);
-        } else {
-          await createLike(post.id, user_id);
-          setLike(likes + 1);
-          setIsLiked(true);
-          setAnimateHeart(true);
-        }
-        setTimeout(() => setAnimateHeart(false), 2000);
-      } catch (error) {
-        console.error("Error liking post: ", error);
-      }
-    };
-
     return (
       <div className={styles.feedContainer}>
         <div className={styles.profilePostedBy}>
@@ -197,7 +176,9 @@ function Home() {
         </div>
         <div
           className={styles.postImageContainer}
-          onDoubleClick={handlePostLike}
+          onDoubleClick={() =>
+            updateLikes(isLiked, setIsLiked, setLike, post.id, user_id)
+          }
         >
           <img
             src={`${IMAGE_URL}${post.image_url}`}
@@ -221,7 +202,7 @@ function Home() {
             className={styles.likeCounts}
             onClick={() => handleCommentModal(true)}
           >
-            {comments > 0 ? comments : 0}
+            {comments > 0 ? comments : ""}
           </div>
         </div>
         <LikeModal

@@ -10,6 +10,8 @@
   --text-secondary: #8e8e8e;
   --heart-icon-default: #b0b0b0;
   --heart-icon: #ed4956;
+  --delete: red;
+  --delete-hover: #e74c3c;
 }
 
 html {

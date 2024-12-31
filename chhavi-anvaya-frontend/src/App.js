@@ -6,6 +6,7 @@ import SignIn from "./pages/signin/SignIn";
 import Navigation from "./pages/navigation/Navigation";
 import Profile from "./pages/profile/Profile";
 import Homepage from "./pages/home/Home";
+import Explore from "./pages/explore/Explore";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CreatePost from './components/createPostModal/CreatePostModal'
 import { useState } from "react";
@@ -43,6 +44,14 @@ function Main() {
             element={
               <ProtectedRoute>
                 <Homepage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="explore"
+            element={
+              <ProtectedRoute>
+                <Explore />
               </ProtectedRoute>
             }
           />

@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { getMyPosts, getFollowingUserPosts } from "../../services/postService";
 import { useContext, useEffect, useState } from "react";
 import { FollowModal } from "../../components/modal/FollowModal";
+import { PostModal } from '../../components/modal/PostModal'
 import { getFollowers, getFollowing } from "../../services/followService";
 
 function Profile() {
@@ -11,32 +12,24 @@ function Profile() {
   const { username } = useParams();
   const { user } = useContext(AuthContext);
   const [myPost, setMyPost] = useState([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await getMyPosts();
-        setMyPost(response.posts);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    };
-    fetchPosts();
-  }, []);
-
   const [otherUserPost, setOtherUserPost] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await getFollowingUserPosts();
-        setOtherUserPost(response.posts);
+        if (username === user.username) {
+          const response = await getMyPosts();
+          setMyPost(response.posts);
+        } else {
+          const response = await getFollowingUserPosts();
+          setOtherUserPost(response.posts);
+        }
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
     };
     fetchPosts();
-  }, []);
+  }, [username, user.username]); 
 
   return user && username === user.username ? (
     <MyProfile username={user.username} myPost={myPost} />
@@ -54,17 +47,22 @@ function Profile() {
           isOwnProfile={true}
         />
         <hr />
-        <div className={styles.userPost}>
-          {myPost.length > 0 ? (
-            myPost.map((post) => (
-              <div className={styles.imageContainer} key={post.id}>
-                <img src={`${IMAGE_URL}${post.image_url}`} alt={post.id} />
-              </div>
-            ))
-          ) : (
-            <p className={styles.noPost}>No posts to show</p>
-          )}
-        </div>
+        <Post posts={myPost}/>
+      </div>
+    );
+  }
+
+  function OtherUserProfile({ username, otherUserPost }) {
+    return (
+      <div className={styles.profile}>
+        <ProfileCard
+          username={username}
+          posts={otherUserPost}
+          bio="This user has no bio."
+          isOwnProfile={false}
+        />
+        <hr />
+        <Post posts={otherUserPost}/>
       </div>
     );
   }
@@ -167,27 +165,38 @@ function Profile() {
     );
   }
 
-  function OtherUserProfile({ username, otherUserPost }) {
+
+  function Post({ posts }) {
+    const [isPostModalVisible, setIsPostModalVisible] = useState(false);
+    const [selectedPost, setSelectedPost] = useState(null);
+
+    const handlePostModal = (value, post = null) => {
+      setSelectedPost(post);
+      setIsPostModalVisible(value);
+    };
+
     return (
-      <div className={styles.profile}>
-        <ProfileCard
-          username={username}
-          posts={otherUserPost}
-          bio="This user has no bio."
-          isOwnProfile={false}
-        />
-        <hr />
-        <div className={styles.userPost}>
-          {otherUserPost.length > 0 ? (
-            otherUserPost.map((post) => (
-              <div className={styles.imageContainer} key={post.id}>
-                <img src={`${IMAGE_URL}${post.image_url}`} alt={post.id} />
-              </div>
-            ))
-          ) : (
-            <p className={styles.noPost}>No posts to show</p>
-          )}
-        </div>
+      <div className={styles.userPost}>
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <div className={styles.imageContainer} key={post.id}>
+              <img
+                src={`${IMAGE_URL}${post.image_url}`}
+                alt={post.id}
+                onClick={() => handlePostModal(true, post)}
+              />
+            </div>
+          ))
+        ) : (
+          <p className={styles.noPost}>No posts to show</p>
+        )}
+        {selectedPost && (
+          <PostModal
+            isVisible={isPostModalVisible}
+            handleModal={setIsPostModalVisible}
+            post={selectedPost}
+          />
+        )}
       </div>
     );
   }

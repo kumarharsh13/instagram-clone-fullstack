@@ -18,7 +18,7 @@
   background-color: white;
   padding: 2rem;
   border-radius: 1rem;
-  width: 30%;
+  width: 70%;
   box-shadow: 0px 4px 8px rgba(0, 0, 0);
   text-align: center;
   display: flex;
@@ -26,6 +26,62 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
+}
+
+.postContainer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 8rem;
+}
+
+.postImageContainer {
+	width: 80%;
+  height: 80%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.postDetails{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-starts;
+	justify-content: space-between;
+	gap: 2rem;
+	width: 35%;
+}
+
+.userDetails {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 2rem;
+}
+
+.likeAndCommentIcons {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.8rem;
+}
+
+.liked {
+  color: var(--heart-icon);
+} 
+
+.trashCan {
+  font-size: 2rem;
+  color: var(--delete);
+}
+
+.trashCan :hover {
+  color: var(--delete-hover);
+}
+
+.captions {
+  font-size: 1.8rem;
+	text-align: left;
 }
 
 .suggestedAccount {
@@ -41,6 +97,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
+	overflow-y: scroll;
 }
 
 .commentUsername {
@@ -59,7 +116,7 @@
   overflow: hidden;
 }
 
-.accountImage img {
+.accountImage img, .postImageContainer img {
   width: 100%;
   height: 100%;
   object-fit: cover;

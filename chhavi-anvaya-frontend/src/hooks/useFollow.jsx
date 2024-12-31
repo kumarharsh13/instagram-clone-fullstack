@@ -6,7 +6,6 @@ function useFollow() {
   const { user } = useContext(AuthContext);
   const [followState, setFollowState] = useState({});
 
-	console.log("In Hook" + followState)
   const handleFollow = async (targetUserId, isRemoved = false) => {
     try {
       const currentState = followState[targetUserId];
