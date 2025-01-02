@@ -1,17 +1,22 @@
 import { useParams } from "react-router-dom";
 import styles from "../profile/Profile.module.css";
 import { AuthContext } from "../../context/AuthContext";
-import { getMyPosts, getFollowingUserPosts } from "../../services/postService";
+import {
+  getMyPosts,
+  getOtherUserProfilePost,
+} from "../../services/postService";
 import { useContext, useEffect, useState } from "react";
 import { FollowModal } from "../../components/modal/FollowModal";
-import { PostModal } from '../../components/modal/PostModal'
+import { PostModal } from "../../components/modal/PostModal";
 import { getFollowers, getFollowing } from "../../services/followService";
+import { createFollow, deleteFollow } from "../../services/followService";
 
 function Profile() {
   const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
   const { username } = useParams();
   const { user } = useContext(AuthContext);
   const [myPost, setMyPost] = useState([]);
+  const [isOtherUserFollowing, setIsOtherUserFollowing] = useState();
   const [otherUserPost, setOtherUserPost] = useState([]);
 
   useEffect(() => {
@@ -21,20 +26,28 @@ function Profile() {
           const response = await getMyPosts();
           setMyPost(response.posts);
         } else {
-          const response = await getFollowingUserPosts();
+          const response = await getOtherUserProfilePost(username);
           setOtherUserPost(response.posts);
+          setIsOtherUserFollowing(
+            response.isFollowingOtherUser ? true : false
+          );
         }
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
     };
     fetchPosts();
-  }, [username, user.username]); 
+  }, [username, user.username]);
 
   return user && username === user.username ? (
     <MyProfile username={user.username} myPost={myPost} />
   ) : (
-    <OtherUserProfile username={username} otherUserPost={otherUserPost} />
+    <OtherUserProfile
+      username={username}
+      otherUserPost={otherUserPost}
+      isOtherUserFollowing={isOtherUserFollowing}
+      setIsOtherUserFollowing={setIsOtherUserFollowing}
+    />
   );
 
   function MyProfile({ username, myPost }) {
@@ -47,12 +60,17 @@ function Profile() {
           isOwnProfile={true}
         />
         <hr />
-        <Post posts={myPost}/>
+        <Post posts={myPost} />
       </div>
     );
   }
 
-  function OtherUserProfile({ username, otherUserPost }) {
+  function OtherUserProfile({
+    username,
+    otherUserPost,
+    isOtherUserFollowing,
+    setIsOtherUserFollowing,
+  }) {
     return (
       <div className={styles.profile}>
         <ProfileCard
@@ -60,14 +78,23 @@ function Profile() {
           posts={otherUserPost}
           bio="This user has no bio."
           isOwnProfile={false}
+          isOtherUserFollowing={isOtherUserFollowing}
+          setIsOtherUserFollowing={setIsOtherUserFollowing}
         />
         <hr />
-        <Post posts={otherUserPost}/>
+        <Post posts={otherUserPost} />
       </div>
     );
   }
 
-  function ProfileCard({ username, posts, bio, isOwnProfile }) {
+  function ProfileCard({
+    username,
+    posts,
+    bio,
+    isOwnProfile,
+    isOtherUserFollowing,
+    setIsOtherUserFollowing,
+  }) {
     const [follwer, setFollower] = useState([]);
     const [following, setFollowing] = useState([]);
     const [isFollower, setIsFollower] = useState(false);
@@ -79,6 +106,20 @@ function Profile() {
 
     const handleFollowing = (value) => {
       setIsFollowing(value);
+    };
+
+    const handleOtherUserFollow = async (otherUserId, value) => {
+      try {
+        if (value) {
+          await deleteFollow(user.id, otherUserId);
+          setIsOtherUserFollowing(false)
+        } else {
+          await createFollow(user.id, otherUserId);
+          setIsOtherUserFollowing(true)
+        }
+      } catch (error) {
+        console.error("Error while following/unfollowing:", error);
+      }
     };
 
     useEffect(() => {
@@ -123,10 +164,23 @@ function Profile() {
             ) : (
               <>
                 {" "}
-                {isFollower ? (
-                  <button>Unfollow</button>
+                {isOtherUserFollowing ? (
+                  <button
+                    onClick={() =>
+                      handleOtherUserFollow(posts[0]?.user_id, isOtherUserFollowing)
+                    }
+                    className={isOtherUserFollowing ? styles.unfollow : ""}
+                  >
+                    Unfollow
+                  </button>
                 ) : (
-                  <button>Follow</button>
+                  <button
+                    onClick={() =>
+                      handleOtherUserFollow(posts[0]?.user_id, isOtherUserFollowing)
+                    }
+                  >
+                    Follow
+                  </button>
                 )}
                 <button>Options</button>
               </>
@@ -164,7 +218,6 @@ function Profile() {
       </div>
     );
   }
-
 
   function Post({ posts }) {
     const [isPostModalVisible, setIsPostModalVisible] = useState(false);

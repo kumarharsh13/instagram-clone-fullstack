@@ -54,6 +54,19 @@ const getFollowingUserPosts = async () => {
   }
 };
 
+const getOtherUserProfilePost = async (username) => {
+  try {
+    const response = await axios.get(`${API_URL}/get_other_user_profile_post`, {
+      params: { username },
+      withCredentials: true,
+    });
+    return response.data
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    throw error;
+  }
+};
+
 const createLike = async (post_id, user_id) => {
   try {
     const response = await axios.post(
@@ -87,11 +100,11 @@ const deleteLike = async (post_id, user_id) => {
 };
 
 const createComment = async (values, post_id, user_id) => {
-	try {
-		const response = await axios.post(
+  try {
+    const response = await axios.post(
       `${API_URL}/create_comment`,
       {
-				comment: values.comment,
+        comment: values.comment,
         post_id: post_id,
         user_id: user_id,
       },
@@ -99,11 +112,11 @@ const createComment = async (values, post_id, user_id) => {
         withCredentials: true,
       }
     );
-		return response.data
-	} catch (error) {
-		console.error("Error adding comment:", error);
+    return response.data;
+  } catch (error) {
+    console.error("Error adding comment:", error);
     throw error;
-	}
+  }
 };
 
 export {
@@ -111,7 +124,8 @@ export {
   getPosts,
   getMyPosts,
   getFollowingUserPosts,
+  getOtherUserProfilePost,
   createLike,
   deleteLike,
-	createComment,
+  createComment,
 };

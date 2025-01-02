@@ -94,7 +94,7 @@ const getMyPosts = async (req, res) => {
   try {
     const posts = await Post.findAll({
       where: {
-        user_id: user_id
+        user_id: user_id,
       },
       include: [
         {
@@ -158,7 +158,7 @@ const getFollowingUserPosts = async (req, res) => {
 
     const posts = await Post.findAll({
       where: {
-        user_id: followedUserIds
+        user_id: followedUserIds,
       },
       include: [
         {
@@ -194,10 +194,83 @@ const getFollowingUserPosts = async (req, res) => {
       order: [["createdAt", "DESC"]],
     });
 
+    return res.status(200).json({
+      success: true,
+      posts,
+    });
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    res.status(500).json({ message: "Failed to fetch posts." });
+  }
+};
+
+const getOtherUserProfilePost = async (req, res) => {
+  const user_id = req.user && req.user.id;
+  if (!user_id) {
+    return res.status(401).json({ message: "Unauthorized. Please log in." });
+  }
+  
+  const { username } = req.query;
+
+  try {
+    console.debug(req.query)
+    const otherUser = await User.findOne({
+      where: {
+        username: username,
+      },
+      attributes: ["id"],
+    });
+
+    const isFollowingOtherUser = await Follow.findOne({
+      where: {
+        follower_id: user_id,
+        following_id: otherUser.id,
+      },
+      attributes: ["id"],
+    });
+
+    const posts = await Post.findAll({
+      where: {
+        user_id: otherUser.id,
+      },
+      include: [
+        {
+          model: User,
+          as: "user",
+          attributes: ["id", "username", "name", "profile_url"],
+        },
+        {
+          model: Like,
+          as: "likes",
+          attributes: ["user_id"],
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["id", "username", "name", "profile_url"],
+            },
+          ],
+        },
+        {
+          model: Comment,
+          as: "comments",
+          attributes: ["comment"],
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["id", "username", "name", "profile_url"],
+            },
+          ],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
 
     return res.status(200).json({
       success: true,
       posts,
+      isFollowingOtherUser,
     });
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -276,6 +349,7 @@ module.exports = {
   getPosts,
   getMyPosts,
   getFollowingUserPosts,
+  getOtherUserProfilePost,
   createLike,
   deleteLike,
   createComment,

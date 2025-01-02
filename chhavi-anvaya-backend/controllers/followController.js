@@ -30,8 +30,8 @@ const createFollow = async (req, res) => {
 };
 
 const getFollowings = async (req, res) => {
-  const { username } = req.query;
   try {
+    const { username } = req.query;
     const user = await User.findOne({
       where: { username },
       attributes: ["id"],

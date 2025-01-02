@@ -93,3 +93,9 @@
 .closeButton:hover {
   background-color: var(--delete-hover);
 }
+
+.unfollow {
+  color: var(--button-link-color) !important;
+  background-color: var(--primary-backgroud) !important;
+  border: 1px solid var(--button-link-color) !important;;
+}

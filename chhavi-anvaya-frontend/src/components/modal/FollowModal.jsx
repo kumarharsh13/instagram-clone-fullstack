@@ -28,7 +28,6 @@ function FollowModal({ isVisible, handleModal, users, heading }) {
     setFollowState(initialFollowState);
   }, [users, setFollowState]);
 
-  console.log(followState)
   const closeModal = () => {
     handleModal(false);
   };
