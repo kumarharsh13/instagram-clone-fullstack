@@ -5,6 +5,7 @@ import styles from "../createPostForm/CreatePostForm.module.css";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import { create_post } from "../../../services/postService";
+
 const step1ValidationSchema = Yup.object({
   image: Yup.mixed().required("Image required"),
 });
@@ -14,12 +15,16 @@ const step2ValidationSchema = Yup.object({
 });
 
 function CreatePostForm({ closeModal }) {
+  const { user } = useContext(AuthContext);
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({});
   const [image, setImage] = useState(null);
   const fileInputRef = useRef();
+  const formDataRef = useRef({
+    image: null,
+    caption: "",
+    user_id: user.id
+  })
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
 
   const formikStep1 = useFormik({
     initialValues: {
@@ -27,7 +32,7 @@ function CreatePostForm({ closeModal }) {
     },
     validationSchema: step1ValidationSchema,
     onSubmit: (values) => {
-      setFormData((prevData) => ({ ...prevData, ...values }));
+      formDataRef.current.image = values.image;
       setStep(2);
     },
   });
@@ -38,22 +43,23 @@ function CreatePostForm({ closeModal }) {
     },
     validationSchema: step2ValidationSchema,
     onSubmit: (values) => {
-      setFormData((prevData) => ({ ...prevData, ...values, user_id: user.id }));
+      formDataRef.current.caption = values.caption
+      formDataRef.current.user_id = user.id;
       handleFinalSubmit();
     },
   });
 
   const handleFinalSubmit = async () => {
     try {
-			const formDataToSubmit = new FormData();
-			formDataToSubmit.append('image', formData.image);
-			formDataToSubmit.append('caption', formData.caption);
-			formDataToSubmit.append('user_id', formData.user_id);
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append('image', formDataRef.current.image);
+      formDataToSubmit.append('caption', formDataRef.current.caption);
+      formDataToSubmit.append('user_id', formDataRef.current.user_id);
+
       const response = await create_post(formDataToSubmit);
       if (response.success) {
         alert("Post Published Successfully!");
         closeModal();
-				setFormData({})
         navigate("/homepage", { replace: true });
       }
     } catch (error) {
@@ -73,13 +79,18 @@ function CreatePostForm({ closeModal }) {
   return (
     <div className={styles.createPostModal}>
       <h1>Create your post</h1>
+
       {step === 1 && (
         <form onSubmit={formikStep1.handleSubmit}>
           <div className={styles.prevNextButton}>
-            <button type="button" onClick={() => setStep(1)} disabled={step}>
+            <button
+              type="button"
+              onClick={() => setStep(1)} 
+              disabled={step === 1}
+            >
               Prev
             </button>
-            <button type="submit" disabled={!setImage}>
+            <button type="submit" disabled={!image}>
               Next
             </button>
           </div>
@@ -112,11 +123,15 @@ function CreatePostForm({ closeModal }) {
       {step === 2 && (
         <form onSubmit={formikStep2.handleSubmit}>
           <div className={styles.prevNextButton}>
-            <button type="button" onClick={() => setStep(1)}>
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+            >
               Prev
             </button>
             <button type="submit">Publish</button>
           </div>
+
           <div className={styles.caption}>
             {image && (
               <div className={styles.imagePreview}>

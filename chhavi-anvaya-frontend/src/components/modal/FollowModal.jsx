@@ -36,6 +36,8 @@ function FollowModal({ isVisible, handleModal, users, heading }) {
     handleFollow(userId, isRemoved);
   };
 
+  const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
+
   if (!isVisible) return null;
 
   return (
@@ -66,7 +68,7 @@ function FollowModal({ isVisible, handleModal, users, heading }) {
             <div className={styles.suggestedAccount} key={index}>
               <div className={styles.accountDetails}>
                 <div className={styles.accountImage}>
-                  <img src="../../croissant.jpg" alt="Suggested Account" />
+                  <img src={`${IMAGE_URL}images/profile_image/user.png`}  alt="Suggested Account" />
                 </div>
                 <Link to={`/profile/${user_name}`}>
                   <p>{user_name}</p>
@@ -87,7 +89,7 @@ function FollowModal({ isVisible, handleModal, users, heading }) {
                   onClick={() => handleFollowClick(userIdToToggle)}
                   className={followState[userIdToToggle] ? styles.unfollow : ""}
                 >
-                  {followState[userIdToToggle] ? "Unollow" : "Follow"}
+                  {followState[userIdToToggle] ? "Unfollow" : "Follow"}
                 </button>
               )}
 

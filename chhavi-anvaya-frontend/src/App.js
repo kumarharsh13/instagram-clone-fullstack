@@ -8,7 +8,7 @@ import Profile from "./pages/profile/Profile";
 import Homepage from "./pages/home/Home";
 import Explore from "./pages/explore/Explore";
 import ProtectedRoute from "./components/ProtectedRoute";
-import CreatePost from './components/createPostModal/CreatePostModal'
+import CreatePost from "./components/createPostModal/CreatePostModal";
 import { useState } from "react";
 
 function App() {
@@ -25,15 +25,20 @@ function Main() {
   const location = useLocation();
   const isAuthPage =
     location.pathname === "/signUp" || location.pathname === "/";
-  const [createPost, setCreatePost] = useState(false)
+  const [createPost, setCreatePost] = useState(false);
 
   const handleSetCreatePost = (value) => {
-    setCreatePost(value)
-  }
+    setCreatePost(value);
+  };
 
   return (
     <div className={`app-container ${isAuthPage ? "auth-page" : ""}`}>
-      {createPost && <CreatePost isVisible={createPost} handleSetCreatePost={handleSetCreatePost}/>}
+      {createPost && (
+        <CreatePost
+          isVisible={createPost}
+          handleSetCreatePost={handleSetCreatePost}
+        />
+      )}
       {!isAuthPage && <Navigation handleSetCreatePost={handleSetCreatePost} />}
       <div className={`content ${isAuthPage ? "full-width" : ""}`}>
         <Routes>

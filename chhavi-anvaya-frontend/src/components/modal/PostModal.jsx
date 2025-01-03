@@ -1,6 +1,10 @@
 import { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faComment, faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import {
+  faHeart,
+  faComment,
+  faTrashCan,
+} from "@fortawesome/free-regular-svg-icons";
 import { AuthContext } from "../../context/AuthContext";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { useFormik } from "formik";
@@ -68,24 +72,32 @@ function PostModal({ isVisible, handleModal, post }) {
           <div className={styles.postContainer}>
             <div
               className={styles.postImageContainer}
-              onDobubleClick={() =>
+              onDoubleClick={() =>
                 updateLikes(isLiked, setIsLiked, setLike, post.id, user.id)
               }
             >
               <img src={`${IMAGE_URL}${post.image_url}`} alt={post.id} />
+              <FontAwesomeIcon icon={faHeartSolid} className={`${styles.heartIcon} ${animateHeart ? styles.animate : ""}`} />
             </div>
             <div className={styles.postDetails}>
               <div className={styles.userDetails}>
                 <div className={styles.accountImage}>
                   <img
-                    src={post.user.profile_url || "../../croissant.jpg"}
+                    src={post.user.profile_url || `${IMAGE_URL}images/profile_image/user.png`}
                     alt="Commented Account"
                   />
                 </div>
                 <Link to={`/profile/${post.user.username}`}>
                   <h1>{post.user.username}</h1>
                 </Link>
-								{user.id === post.user.id ? <FontAwesomeIcon icon={faTrashCan} className={styles.trashCan} />: ""}
+                {user.id === post.user.id ? (
+                  <FontAwesomeIcon
+                    icon={faTrashCan}
+                    className={styles.trashCan}
+                  />
+                ) : (
+                  ""
+                )}
               </div>
               <div className={styles.likeAndCommentIcons}>
                 <FontAwesomeIcon
@@ -121,7 +133,7 @@ function PostModal({ isVisible, handleModal, post }) {
                       <div className={styles.accountImage}>
                         <img
                           src={
-                            comment.user.profile_url || "../../croissant.jpg"
+                            comment.user.profile_url || `${IMAGE_URL}images/profile_image/user.png`
                           }
                           alt="Commented Account"
                         />

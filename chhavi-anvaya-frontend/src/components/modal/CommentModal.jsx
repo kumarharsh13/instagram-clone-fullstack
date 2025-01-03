@@ -8,6 +8,8 @@ function CommentModal({ isVisible, handleModal, users, heading }) {
 		handleModal(false);
 	};
 
+	const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
+
 	return (
 		<div className={styles.modalBackdrop}>
 			<div className={styles.modalContent}>
@@ -17,7 +19,7 @@ function CommentModal({ isVisible, handleModal, users, heading }) {
 						<div className={styles.commentedAccount} key={index}>
 							<div className={styles.accountDetails}>
 								<div className={styles.accountImage}>
-									<img src="../../croissant.jpg" alt="Commented Account" />
+									<img src={`${IMAGE_URL}images/profile_image/user.png`} alt="Commented Account" />
 								</div>
 								<Link to={`/profile/${user.user.username}`}>
 									<p className={styles.commentUsername}>{user.user.username}</p>

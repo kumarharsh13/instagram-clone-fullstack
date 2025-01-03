@@ -150,7 +150,7 @@ function Profile() {
       <div className={styles.profileInfo}>
         <div className={styles.profilePicture}>
           <div className={styles.profileImageContainer}>
-            <img src="../../croissant.jpg" alt="" />
+            <img src={posts[0]?.user?.profile_url || `${IMAGE_URL}images/profile_image/user.png`} alt="" />
           </div>
         </div>
         <div className={styles.profileDetails}>

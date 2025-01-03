@@ -3,6 +3,8 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import styles from "../searchNavigation/SearchNavigation.module.css";
 
 function SearchNavigation() {
+  const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
+
   return (
     <div className={styles.searchNavigation}>
       <div className={styles.searchBar}>
@@ -17,7 +19,7 @@ function SearchNavigation() {
       <div className={styles.searchData}>
         <div className={styles.searchProfileContainer}>
           <div className={styles.searchUserProfileImage}>
-            <img src="../../croissant.jpg" alt="" />
+            <img src={`${IMAGE_URL}images/profile_image/user.png`} alt="" />
           </div>
           <div className={styles.profileNames}>
             <h3>Gootiya</h3>
@@ -26,7 +28,7 @@ function SearchNavigation() {
         </div>
         <div className={styles.searchProfileContainer}>
           <div className={styles.searchUserProfileImage}>
-            <img src="../../croissant.jpg" alt="" />
+            <img src={`${IMAGE_URL}images/profile_image/user.png`} alt="" />
           </div>
           <div className={styles.profileNames}>
             <h3>Gootiya</h3>
@@ -35,7 +37,7 @@ function SearchNavigation() {
         </div>
         <div className={styles.searchProfileContainer}>
           <div className={styles.searchUserProfileImage}>
-            <img src="../../croissant.jpg" alt="" />
+            <img src={`${IMAGE_URL}images/profile_image/user.png`} alt="" />
           </div>
           <div className={styles.profileNames}>
             <h3>Gootiya</h3>
@@ -44,7 +46,7 @@ function SearchNavigation() {
         </div>
         <div className={styles.searchProfileContainer}>
           <div className={styles.searchUserProfileImage}>
-            <img src="../../croissant.jpg" alt="" />
+            <img src={`${IMAGE_URL}images/profile_image/user.png`} alt="" />
           </div>
           <div className={styles.profileNames}>
             <h3>Gootiya</h3>

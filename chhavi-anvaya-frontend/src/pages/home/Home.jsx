@@ -23,6 +23,7 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const [isSuggest, setIsSuggest] = useState(false);
   const [suggestFollow, setSuggestFollow] = useState([]);
+  const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
 
   const handleFollowSuggestion = (value) => {
     setIsSuggest(value);
@@ -92,7 +93,7 @@ function Home() {
                   <div className={styles.accountDetails}>
                     <div className={styles.accountImage}>
                       <img
-                        src={follow.profile_url || "../../croissant.jpg"}
+                        src={follow.profile_url || `${IMAGE_URL}images/profile_image/user.png`}
                         alt={follow.username}
                       />
                     </div>
@@ -168,7 +169,7 @@ function Home() {
       <div className={styles.feedContainer}>
         <div className={styles.profilePostedBy}>
           <div className={styles.profilePostedByImage}>
-            <img src="../../croissant.jpg" alt="" />
+            <img src={post.user.profile_url || `${IMAGE_URL}images/profile_image/user.png` } alt="" />
           </div>
           <Link to={`/profile/${post.user.username}`}>
             <h3>{post.user.username}</h3>
@@ -185,6 +186,7 @@ function Home() {
             alt={post.id}
             className={animateHeart ? styles.heartAnimation : ""}
           />
+          <FontAwesomeIcon icon={faHeartSolid} className={`${styles.heartIcon} ${animateHeart ? styles.animate : ""}`} />
         </div>
         <div className={styles.likeAndCommentIcons}>
           <FontAwesomeIcon

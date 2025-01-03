@@ -1,5 +1,6 @@
 .app-container {
   display: flex;
+  flex-direction: row;
   height: 100vh;
 }
 
@@ -11,11 +12,17 @@
 .content {
   flex: 1;
   /* The content takes up 75% by default when navigation is shown */
-  padding: 20px;
-  transition: width 0.3s ease-in-out;
+  padding: 2rem;
+  margin-left: 40rem;
+  transition: margin-left 0.3s ease-in-out;
 }
 
 .full-width {
-  flex: 1 1 100%;
+  flex: 1;
+  margin-left: 0;
   /* Take up 100% width when on auth pages (SignIn or SignUp) */
+}
+
+.auth-page .content {
+  margin-left: 0;
 }

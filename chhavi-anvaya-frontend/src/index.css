@@ -4,8 +4,8 @@
 :root {
   --primary-backgroud: #ffffff;
   --secondary-background: #f8f8f8;
-  --button-link-color: #0095f6;
-  --button-link--hover-color: #0080ff;
+  --button-link-color: #ff6a13;
+  --button-link--hover-color: #e76f00;
   --text-primamry: #262626;
   --text-secondary: #8e8e8e;
   --heart-icon-default: #b0b0b0;
@@ -35,11 +35,20 @@ body {
   overflow-y: auto;
 }
 
+input {
+  background: var(--primary-backgroud);
+  border-radius: 10px;
+  border: none;
+  box-shadow: inset 1px 1px 3px var(--text-secondary)
+}
+
 button {
   background: var(--button-link-color);
   color: var(--primary-backgroud);
   border-radius: 10px;
   border-style: none;
+  box-shadow: 1px 1px 2px var(--text-secondary);
+  font-weight: 600;
 }
 
 button:hover {
@@ -48,7 +57,7 @@ button:hover {
 
 a {
   text-decoration: none;
-  color: var(--button-link-color);
+  color: var(--text-primamry);
 }
 
 a:hover {

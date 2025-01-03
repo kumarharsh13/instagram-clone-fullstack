@@ -7,8 +7,8 @@
 }
 
 .prevNextButton button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+	background-color: #ccc;
+	cursor: not-allowed;
 }
 
 .imageUpload p {
@@ -17,11 +17,11 @@
 	left: 50%;
 	transform: translate(-50%, 0%);
 	font-size: 1.4rem;
-  background: var(--button-link-color);
-  color: var(--primary-backgroud);
-  border-radius: 10px;
-  border-style: none;
-  padding: 0.8rem;
+	background: var(--button-link-color);
+	color: var(--primary-backgroud);
+	border-radius: 10px;
+	border-style: none;
+	padding: 0.8rem;
 }
 
 .imageUpload p:hover {
@@ -37,14 +37,14 @@
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-  height: 100%;
-  overflow: hidden;
+	height: 100%;
+	overflow: hidden;
 }
 
 .imagePreview img {
 	width: 100%;
-  height: 100%;
-  object-fit: cover;
+	height: 100%;
+	object-fit: cover;
 }
 
 .caption {
@@ -59,7 +59,7 @@
 input,
 textarea,
 button {
-  width: 100%;
-  margin: 0.3rem 0rem;
-  padding: 0.8rem;
+	width: 100%;
+	margin: 0.3rem 0rem;
+	padding: 0.8rem;
 }

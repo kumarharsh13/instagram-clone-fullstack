@@ -2,7 +2,7 @@
   position: fixed;
   top: 50%;
   left: 50%;
-	transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.7);
@@ -29,33 +29,34 @@
 }
 
 .postContainer {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8rem;
 }
 
 .postImageContainer {
-	width: 80%;
+  position: relative;
+  width: 80%;
   height: 80%;
   border-radius: 10px;
   overflow: hidden;
 }
 
-.postDetails{
-	display: flex;
-	flex-direction: column;
-	align-items: flex-starts;
-	justify-content: space-between;
-	gap: 2rem;
-	width: 35%;
+.postDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-starts;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 35%;
 }
 
 .userDetails {
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	gap: 2rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2rem;
 }
 
 .likeAndCommentIcons {
@@ -68,7 +69,7 @@
 
 .liked {
   color: var(--heart-icon);
-} 
+}
 
 .trashCan {
   font-size: 2rem;
@@ -81,7 +82,7 @@
 
 .captions {
   font-size: 1.8rem;
-	text-align: left;
+  text-align: left;
 }
 
 .suggestedAccount {
@@ -97,7 +98,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-	overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 .commentUsername {
@@ -116,7 +117,8 @@
   overflow: hidden;
 }
 
-.accountImage img, .postImageContainer img {
+.accountImage img,
+.postImageContainer img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -149,4 +151,60 @@
 
 .closeButton:hover {
   background-color: var(--delete-hover);
+}
+
+.heartIcon {
+  transition: transform 0.3s ease-out, color 0.3s ease-out;
+  position: absolute;
+  display: inline-block;
+  font-size: 6rem;
+  cursor: pointer;
+}
+
+.heartIcon.animate {
+  transform: scale(1.3);
+  top: 50%;
+  right: 50%;
+  z-index: 9999;
+  color: var(--heart-icon);
+}
+
+.heartIcon.liked {
+  color: var(--heart-icon);
+}
+
+.error-message {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+@keyframes heartPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  0% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+}
+
+.heartIcon.animate {
+  animation: heartPulse 0.6s ease-in-out;
 }
