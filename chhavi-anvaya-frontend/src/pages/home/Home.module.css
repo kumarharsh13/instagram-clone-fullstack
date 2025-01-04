@@ -8,6 +8,11 @@
 }
 
 .feed {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
   padding: 2rem;
   width: 60%;
 }
@@ -18,7 +23,9 @@
   justify-content: center;
   align-items: flex-start;
   gap: 1rem;
-  padding-bottom: 4rem;
+  padding: 4rem;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px var(--text-secondary);
 }
 
 .profilePostedBy {
@@ -96,6 +103,7 @@
 
 .sugesstionToFollow {
   width: 30%;
+  margin-top: 2rem;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -103,6 +111,8 @@
   align-items: center;
   font-size: 2rem;
   gap: 4rem;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px var(--text-secondary);
 }
 
 .suggestionTextLink,
@@ -111,6 +121,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.suggestionTextLink {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--text-secondary);
 }
 
 .suggestionTextLink button {

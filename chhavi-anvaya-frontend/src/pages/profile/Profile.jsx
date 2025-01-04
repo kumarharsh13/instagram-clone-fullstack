@@ -8,6 +8,7 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { FollowModal } from "../../components/modal/FollowModal";
 import { PostModal } from "../../components/modal/PostModal";
+import Loader from "../../components/Loader/Loader";
 import { getFollowers, getFollowing } from "../../services/followService";
 import { createFollow, deleteFollow } from "../../services/followService";
 
@@ -18,20 +19,21 @@ function Profile() {
   const [myPost, setMyPost] = useState([]);
   const [isOtherUserFollowing, setIsOtherUserFollowing] = useState();
   const [otherUserPost, setOtherUserPost] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        setIsLoading(true);
         if (username === user.username) {
           const response = await getMyPosts();
           setMyPost(response.posts);
         } else {
           const response = await getOtherUserProfilePost(username);
           setOtherUserPost(response.posts);
-          setIsOtherUserFollowing(
-            response.isFollowingOtherUser ? true : false
-          );
+          setIsOtherUserFollowing(response.isFollowingOtherUser ? true : false);
         }
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
@@ -39,15 +41,20 @@ function Profile() {
     fetchPosts();
   }, [username, user.username]);
 
-  return user && username === user.username ? (
-    <MyProfile username={user.username} myPost={myPost} />
-  ) : (
-    <OtherUserProfile
-      username={username}
-      otherUserPost={otherUserPost}
-      isOtherUserFollowing={isOtherUserFollowing}
-      setIsOtherUserFollowing={setIsOtherUserFollowing}
-    />
+  return (
+    user &&
+    (isLoading ? (
+      <Loader />
+    ) : username === user.username ? (
+      <MyProfile username={user.username} myPost={myPost} />
+    ) : (
+      <OtherUserProfile
+        username={username}
+        otherUserPost={otherUserPost}
+        isOtherUserFollowing={isOtherUserFollowing}
+        setIsOtherUserFollowing={setIsOtherUserFollowing}
+      />
+    ))
   );
 
   function MyProfile({ username, myPost }) {
@@ -112,10 +119,10 @@ function Profile() {
       try {
         if (value) {
           await deleteFollow(user.id, otherUserId);
-          setIsOtherUserFollowing(false)
+          setIsOtherUserFollowing(false);
         } else {
           await createFollow(user.id, otherUserId);
-          setIsOtherUserFollowing(true)
+          setIsOtherUserFollowing(true);
         }
       } catch (error) {
         console.error("Error while following/unfollowing:", error);
@@ -150,7 +157,14 @@ function Profile() {
       <div className={styles.profileInfo}>
         <div className={styles.profilePicture}>
           <div className={styles.profileImageContainer}>
-            <img src={posts[0]?.user?.profile_url || `${IMAGE_URL}images/profile_image/user.png`} alt="" />
+            <img
+              src={
+                posts[0]?.user?.profile_url
+                  ? `${IMAGE_URL}${user.profile_url}`
+                  : `${IMAGE_URL}images/profile_image/user.png`
+              }
+              alt=""
+            />
           </div>
         </div>
         <div className={styles.profileDetails}>
@@ -167,7 +181,10 @@ function Profile() {
                 {isOtherUserFollowing ? (
                   <button
                     onClick={() =>
-                      handleOtherUserFollow(posts[0]?.user_id, isOtherUserFollowing)
+                      handleOtherUserFollow(
+                        posts[0]?.user_id,
+                        isOtherUserFollowing
+                      )
                     }
                     className={isOtherUserFollowing ? styles.unfollow : ""}
                   >
@@ -176,7 +193,10 @@ function Profile() {
                 ) : (
                   <button
                     onClick={() =>
-                      handleOtherUserFollow(posts[0]?.user_id, isOtherUserFollowing)
+                      handleOtherUserFollow(
+                        posts[0]?.user_id,
+                        isOtherUserFollowing
+                      )
                     }
                   >
                     Follow

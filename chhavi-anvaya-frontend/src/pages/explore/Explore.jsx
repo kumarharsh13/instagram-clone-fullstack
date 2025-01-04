@@ -3,17 +3,21 @@ import { AuthContext } from "../../context/AuthContext";
 import { getPosts } from "../../services/postService";
 import { useContext, useEffect, useState } from "react";
 import { PostModal } from "../../components/modal/PostModal";
+import Loader from "../../components/Loader/Loader";
 
 function Explore() {
   const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
   const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        setIsLoading(true);
         const response = await getPosts();
         setPosts(response.posts);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
@@ -30,7 +34,10 @@ function Explore() {
   };
 
   return (
-    user && (
+    user &&
+    (isLoading ? (
+      <Loader />
+    ) : (
       <div className={styles.userPost}>
         {posts.length > 0 ? (
           posts.map((post) => (
@@ -53,7 +60,7 @@ function Explore() {
           />
         )}
       </div>
-    )
+    ))
   );
 }
 

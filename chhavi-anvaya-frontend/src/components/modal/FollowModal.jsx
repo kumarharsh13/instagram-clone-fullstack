@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./FollowModal.module.css";
 import { useEffect } from "react";
-import { useFollow } from '../../hooks/useFollow';
+import { useFollow } from "../../hooks/useFollow";
 
 function FollowModal({ isVisible, handleModal, users, heading }) {
   const { followState, setFollowState, handleFollow } = useFollow();
@@ -68,7 +68,14 @@ function FollowModal({ isVisible, handleModal, users, heading }) {
             <div className={styles.suggestedAccount} key={index}>
               <div className={styles.accountDetails}>
                 <div className={styles.accountImage}>
-                  <img src={`${IMAGE_URL}images/profile_image/user.png`}  alt="Suggested Account" />
+                  <img
+                    src={
+                      user.profile_url
+                        ? `${IMAGE_URL}${user.profile_url}`
+                        : `${IMAGE_URL}images/profile_image/user.png`
+                    }
+                    alt="Suggested Account"
+                  />
                 </div>
                 <Link to={`/profile/${user_name}`}>
                   <p>{user_name}</p>

@@ -9,6 +9,7 @@ import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import styles from "../home/Home.module.css";
 import { FollowModal as LikeModal } from "../../components/modal/FollowModal";
 import { CommentModal } from "../../components/modal/CommentModal";
+import Loader from "../../components/Loader/Loader";
 import {
   getFollowingUserPosts,
   createComment,
@@ -23,6 +24,7 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const [isSuggest, setIsSuggest] = useState(false);
   const [suggestFollow, setSuggestFollow] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
 
   const handleFollowSuggestion = (value) => {
@@ -32,8 +34,10 @@ function Home() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        setIsLoading(true);
         const response = await getFollowingUserPosts();
         setPosts(response.posts);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
@@ -61,7 +65,10 @@ function Home() {
   }, [user, setFollowState]);
 
   return (
-    user && (
+    user &&
+    (isLoading ? (
+      <Loader />
+    ) : (
       <div className={styles.home}>
         <div className={styles.feed}>
           {posts.length > 0 ? (
@@ -93,7 +100,11 @@ function Home() {
                   <div className={styles.accountDetails}>
                     <div className={styles.accountImage}>
                       <img
-                        src={follow.profile_url || `${IMAGE_URL}images/profile_image/user.png`}
+                        src={
+                          follow.profile_url
+                            ? `${IMAGE_URL}${follow.profile_url}`
+                            : `${IMAGE_URL}images/profile_image/user.png`
+                        }
                         alt={follow.username}
                       />
                     </div>
@@ -116,7 +127,7 @@ function Home() {
           )}
         </div>
       </div>
-    )
+    ))
   );
 
   function PostCard({ post, user_id }) {
@@ -169,7 +180,14 @@ function Home() {
       <div className={styles.feedContainer}>
         <div className={styles.profilePostedBy}>
           <div className={styles.profilePostedByImage}>
-            <img src={post.user.profile_url || `${IMAGE_URL}images/profile_image/user.png` } alt="" />
+            <img
+              src={
+                post.profile_url
+                  ? `${IMAGE_URL}${post.profile_url}`
+                  : `${IMAGE_URL}images/profile_image/user.png`
+              }
+              alt=""
+            />
           </div>
           <Link to={`/profile/${post.user.username}`}>
             <h3>{post.user.username}</h3>
@@ -186,7 +204,12 @@ function Home() {
             alt={post.id}
             className={animateHeart ? styles.heartAnimation : ""}
           />
-          <FontAwesomeIcon icon={faHeartSolid} className={`${styles.heartIcon} ${animateHeart ? styles.animate : ""}`} />
+          <FontAwesomeIcon
+            icon={faHeartSolid}
+            className={`${styles.heartIcon} ${
+              animateHeart ? styles.animate : ""
+            }`}
+          />
         </div>
         <div className={styles.likeAndCommentIcons}>
           <FontAwesomeIcon

@@ -77,13 +77,22 @@ function PostModal({ isVisible, handleModal, post }) {
               }
             >
               <img src={`${IMAGE_URL}${post.image_url}`} alt={post.id} />
-              <FontAwesomeIcon icon={faHeartSolid} className={`${styles.heartIcon} ${animateHeart ? styles.animate : ""}`} />
+              <FontAwesomeIcon
+                icon={faHeartSolid}
+                className={`${styles.heartIcon} ${
+                  animateHeart ? styles.animate : ""
+                }`}
+              />
             </div>
             <div className={styles.postDetails}>
               <div className={styles.userDetails}>
                 <div className={styles.accountImage}>
                   <img
-                    src={post.user.profile_url || `${IMAGE_URL}images/profile_image/user.png`}
+                    src={
+                      post.user.profile_url
+                        ? `${IMAGE_URL}${post.user.profile_url}`
+                        : `${IMAGE_URL}images/profile_image/user.png`
+                    }
                     alt="Commented Account"
                   />
                 </div>
@@ -133,7 +142,9 @@ function PostModal({ isVisible, handleModal, post }) {
                       <div className={styles.accountImage}>
                         <img
                           src={
-                            comment.user.profile_url || `${IMAGE_URL}images/profile_image/user.png`
+                            comment.user.profile_url
+                              ? `${IMAGE_URL}${comment.user.profile_url}`
+                              : `${IMAGE_URL}images/profile_image/user.png`
                           }
                           alt="Commented Account"
                         />
