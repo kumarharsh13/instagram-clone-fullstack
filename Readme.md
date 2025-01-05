@@ -26,3 +26,65 @@ This project is a fully-functional social media platform built with a modern ful
 - **File Storage**: Local storage for handling media uploads (images).
 - **Real-Time Notifications**: Socket.io for real-time notifications and updates.
 - **Real-Time Messaging**: Socket.io for instant messaging, ensuring real-time communication in chats.
+
+## Screenshots
+
+- Sign Up Page:
+
+  <img src="Screenshot/SignUp.png">
+
+- Sign In Page:
+
+  <img src="Screenshot/SignIn.png">
+
+- Homepage Page:
+
+  <img src="Screenshot/Homepage.png">
+
+- Explore Page:
+
+  <img src="Screenshot/Explorepage.png">
+
+- Create Post Page:
+
+  <img src="Screenshot/Create Post.png">
+
+- My Profile Page:
+
+  <img src="Screenshot/My Profile.png">
+
+- Other Profile Page:
+
+  <img src="Screenshot/Other's Profile.png">
+
+- Edit Modal:
+
+  <img src="Screenshot/Edit Profile.png">
+
+- Edit Profile Details Modal:
+
+  <img src="Screenshot/Edit Profile Details.png">
+
+- Update Password:
+
+  <img src="Screenshot/Update Password.png">
+
+- Suggestion to Follow Page:
+
+  <img src="Screenshot/Follow Suggestion.png">
+
+- Followers Modal:
+
+  <img src="Screenshot/Followers.png">
+
+- Following Modal:
+
+  <img src="Screenshot/Following.png">
+
+- Like Modal:
+
+  <img src="Screenshot/Likes Modal.png">
+
+- Post Modal:
+
+  <img src="Screenshot/Post Modal.png">
