@@ -45,7 +45,7 @@ const getPosts = async (req, res) => {
         {
           model: User,
           as: "user",
-          attributes: ["id", "username", "name", "profile_url"],
+          attributes: ["id", "username", "name", "bio", "profile_url"],
         },
         {
           model: Like,
@@ -55,7 +55,7 @@ const getPosts = async (req, res) => {
             {
               model: User,
               as: "user",
-              attributes: ["id", "username", "name", "profile_url"],
+              attributes: ["id", "username", "name", "bio", "profile_url"],
             },
           ],
         },
@@ -67,7 +67,7 @@ const getPosts = async (req, res) => {
             {
               model: User,
               as: "user",
-              attributes: ["id", "username", "name", "profile_url"],
+              attributes: ["id", "username", "name", "bio", "profile_url"],
             },
           ],
         },
@@ -100,7 +100,7 @@ const getMyPosts = async (req, res) => {
         {
           model: User,
           as: "user",
-          attributes: ["id", "username", "name", "profile_url"],
+          attributes: ["id", "username", "name", "bio", "profile_url"],
         },
         {
           model: Like,
@@ -110,7 +110,7 @@ const getMyPosts = async (req, res) => {
             {
               model: User,
               as: "user",
-              attributes: ["id", "username", "name", "profile_url"],
+              attributes: ["id", "username", "name", "bio", "profile_url"],
             },
           ],
         },
@@ -122,7 +122,7 @@ const getMyPosts = async (req, res) => {
             {
               model: User,
               as: "user",
-              attributes: ["id", "username", "name", "profile_url"],
+              attributes: ["id", "username", "name", "bio", "profile_url"],
             },
           ],
         },
@@ -164,7 +164,7 @@ const getFollowingUserPosts = async (req, res) => {
         {
           model: User,
           as: "user",
-          attributes: ["id", "username", "name", "profile_url"],
+          attributes: ["id", "username", "name", "bio", "profile_url"],
         },
         {
           model: Like,
@@ -174,7 +174,7 @@ const getFollowingUserPosts = async (req, res) => {
             {
               model: User,
               as: "user",
-              attributes: ["id", "username", "name", "profile_url"],
+              attributes: ["id", "username", "name", "bio", "profile_url"],
             },
           ],
         },
@@ -186,7 +186,7 @@ const getFollowingUserPosts = async (req, res) => {
             {
               model: User,
               as: "user",
-              attributes: ["id", "username", "name", "profile_url"],
+              attributes: ["id", "username", "name", "bio", "profile_url"],
             },
           ],
         },
@@ -237,7 +237,7 @@ const getOtherUserProfilePost = async (req, res) => {
         {
           model: User,
           as: "user",
-          attributes: ["id", "username", "name", "profile_url"],
+          attributes: ["id", "username", "name", "bio", "profile_url"],
         },
         {
           model: Like,
@@ -247,7 +247,7 @@ const getOtherUserProfilePost = async (req, res) => {
             {
               model: User,
               as: "user",
-              attributes: ["id", "username", "name", "profile_url"],
+              attributes: ["id", "username", "name", "bio", "profile_url"],
             },
           ],
         },
@@ -259,7 +259,7 @@ const getOtherUserProfilePost = async (req, res) => {
             {
               model: User,
               as: "user",
-              attributes: ["id", "username", "name", "profile_url"],
+              attributes: ["id", "username", "name", "bio", "profile_url"],
             },
           ],
         },

@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "../profile/Profile.module.css";
 import { AuthContext } from "../../context/AuthContext";
@@ -5,9 +6,9 @@ import {
   getMyPosts,
   getOtherUserProfilePost,
 } from "../../services/postService";
-import { useContext, useEffect, useState } from "react";
 import { FollowModal } from "../../components/modal/FollowModal";
 import { PostModal } from "../../components/modal/PostModal";
+import ProfileEdit from "../../components/profileModal/ProfileEdit";
 import Loader from "../../components/Loader/Loader";
 import { getFollowers, getFollowing } from "../../services/followService";
 import { createFollow, deleteFollow } from "../../services/followService";
@@ -106,6 +107,11 @@ function Profile() {
     const [following, setFollowing] = useState([]);
     const [isFollower, setIsFollower] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+
+    const handleEdit = (value) => {
+      setIsEdit(value);
+    };
 
     const handleFollower = (value) => {
       setIsFollower(value);
@@ -160,7 +166,7 @@ function Profile() {
             <img
               src={
                 posts[0]?.user?.profile_url
-                  ? `${IMAGE_URL}${user.profile_url}`
+                  ? `${IMAGE_URL}${posts[0]?.user?.profile_url}`
                   : `${IMAGE_URL}images/profile_image/user.png`
               }
               alt=""
@@ -172,8 +178,9 @@ function Profile() {
             <h3>{username}</h3>
             {isOwnProfile ? (
               <>
-                <button>Edit</button>
+                <button onClick={() => handleEdit(true)}>Edit</button>
                 <button>Options</button>
+                <ProfileEdit isVisible={isEdit} handleModal={handleEdit} />
               </>
             ) : (
               <>

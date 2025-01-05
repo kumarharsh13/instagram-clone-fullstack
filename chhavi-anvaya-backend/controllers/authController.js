@@ -12,6 +12,13 @@ const signUp = async (req, res) => {
     if (existingUsername)
       return res.status(400).json({ message: "Username already in use." });
 
+    const passwordStrengthRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/;
+    if (!passwordStrengthRegex.test(password)) {
+      return res.status(400).json({
+        message: "Password must be at least 6 characters long and contain letters and numbers",
+      });
+    }
+
     const hashedPassowrd = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({

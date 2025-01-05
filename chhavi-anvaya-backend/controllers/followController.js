@@ -47,7 +47,7 @@ const getFollowings = async (req, res) => {
         {
           model: User,
           as: "following",
-          attributes: ["id", "username", "name", "profile_url"],
+          attributes: ["id", "username", "name", "bio", "profile_url"],
         },
       ],
     });
@@ -81,7 +81,7 @@ const getFollowers = async (req, res) => {
         {
           model: User,
           as: "follower",
-          attributes: ["id", "username", "name", "profile_url"],
+          attributes: ["id", "username", "name", "bio", "profile_url"],
         },
       ],
     });
@@ -125,7 +125,7 @@ const getFollowSuggestion = async (req, res) => {
           [Sequelize.Op.notIn]: followedUserIds,
         },
       },
-      attributes: ["id", "username", "name", "profile_url"],
+      attributes: ["id", "username", "name", "bio", "profile_url"],
     });
 
     return res.status(200).json({

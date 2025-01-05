@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import styles from "../searchNavigation/SearchNavigation.module.css";
+import { Link } from "react-router-dom";
 import Loader from "../Loader/Loader";
 import { searchUser } from "../../services/userService";
 

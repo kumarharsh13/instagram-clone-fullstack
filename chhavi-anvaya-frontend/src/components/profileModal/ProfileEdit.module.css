@@ -1,0 +1,107 @@
+.modalBackdrop {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.modalContent {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 30%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.heading4 {
+	padding-bottom: 1rem;
+	cursor: pointer;
+}
+
+.closeButton {
+  background-color: var(--delete);
+  color: var(--primary-backgroud);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.closeButton:hover {
+  background-color: var(--delete-hover);
+}
+
+.formForPasswordChange {
+	width: 100%;
+}
+
+.changePasswordContent {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	gap: 2rem;
+  background: var(--secondary_background);
+}
+
+label, input,
+button {
+  width: 100%;
+}
+
+.submitButton {
+	margin-top: 1rem;
+}
+
+.imageUpload p {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, 0%);
+	font-size: 1.4rem;
+	background: var(--button-link-color);
+	color: var(--primary-backgroud);
+	border-radius: 10px;
+	border-style: none;
+	padding: 0.8rem;
+	cursor: pointer;
+}
+
+.imageUpload p:hover {
+	background: var(--button-link--hover-color);
+}
+
+.imageUpload input {
+	opacity: 0;
+}
+
+.imagePreview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.imagePreview img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
