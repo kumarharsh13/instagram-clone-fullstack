@@ -1,3 +1,5 @@
+# Instagram Clone -- Full-Stack Social Media App (React, Node, Express, PostgreSQL)
+
 # ChhaviAnvaya
 
 ## Overview
