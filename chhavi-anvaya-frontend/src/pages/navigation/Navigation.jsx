@@ -55,7 +55,7 @@ function Navigation({ handleSetCreatePost }) {
             <li
               onClick={() =>
                 handleIconClick(
-                  <HomeNavigation handleIconClick={handleIconClick} />
+                  <HomeNavigation handleIconClick={handleIconClick} />,
                 )
               }
             >
