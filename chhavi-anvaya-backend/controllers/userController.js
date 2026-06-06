@@ -101,7 +101,7 @@ const getSearchUser = async (req, res) => {
   const query = req.query.query;
 
   try {
-    const users = await await User.findAll({
+    const users = await User.findAll({
       where: {
         [Op.or]: [
           { username: { [Op.iLike]: `%${query}%` } },

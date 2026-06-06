@@ -18,6 +18,152 @@ import { getFollowSuggestion } from "../../services/followService";
 import { useFollow } from "../../hooks/useFollow";
 import { useLike } from "../../hooks/useLike";
 
+const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
+
+const validationSchema = Yup.object({
+  comment: Yup.string().required("Comment Required"),
+});
+
+function PostCard({ post, user_id }) {
+  const [likes, setLike] = useState(post.likes.length || 0);
+  const [comments, setComments] = useState(post.comments.length || 0);
+  const [isLiked, setIsLiked] = useState(
+    post.likes.some((like) => like.user_id === user_id)
+  );
+  const [isLike, setIsLike] = useState(false);
+  const [isComment, setIsComment] = useState(false);
+  const { animateHeart, updateLikes } = useLike();
+
+  const handleLikeModal = (value) => {
+    setIsLike(value);
+  };
+
+  const handleCommentModal = (value) => {
+    setIsComment(value);
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      comment: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const response = await createComment(values, post.id, user_id);
+
+        if (response.success) {
+          alert("Comment Successfully");
+          setComments(comments + 1);
+          resetForm();
+        } else {
+          alert(response.message || "Failed to post comment");
+        }
+      } catch (error) {
+        console.error("Error submitting comment:", error);
+        alert("Something went wrong! Please try again.");
+      }
+    },
+  });
+
+  return (
+    <div className={styles.feedContainer}>
+      <div className={styles.profilePostedBy}>
+        <div className={styles.profilePostedByImage}>
+          <img
+            src={
+              post.profile_url
+                ? `${IMAGE_URL}${post.profile_url}`
+                : `${IMAGE_URL}images/profile_image/user.png`
+            }
+            alt=""
+          />
+        </div>
+        <Link to={`/profile/${post.user.username}`}>
+          <h3>{post.user.username}</h3>
+        </Link>
+      </div>
+      <div
+        className={styles.postImageContainer}
+        onDoubleClick={() =>
+          updateLikes(isLiked, setIsLiked, setLike, post.id, user_id)
+        }
+      >
+        <img
+          src={`${IMAGE_URL}${post.image_url}`}
+          alt={post.id}
+          className={animateHeart ? styles.heartAnimation : ""}
+        />
+        <FontAwesomeIcon
+          icon={faHeartSolid}
+          className={`${styles.heartIcon} ${
+            animateHeart ? styles.animate : ""
+          }`}
+        />
+      </div>
+      <div className={styles.likeAndCommentIcons}>
+        <FontAwesomeIcon
+          icon={isLiked ? faHeartSolid : faHeart}
+          className={isLiked ? styles.liked : ""}
+        />
+        <div
+          className={styles.likeCounts}
+          onClick={() => handleLikeModal(true)}
+        >
+          {likes > 0 ? likes : ""}
+        </div>
+        <FontAwesomeIcon icon={faComment} />
+        <div
+          className={styles.likeCounts}
+          onClick={() => handleCommentModal(true)}
+        >
+          {comments > 0 ? comments : ""}
+        </div>
+      </div>
+      <LikeModal
+        isVisible={isLike}
+        handleModal={handleLikeModal}
+        users={post.likes}
+        heading={"Likes"}
+      />
+      <CommentModal
+        isVisible={isComment}
+        handleModal={handleCommentModal}
+        users={post.comments}
+        heading={"Comments"}
+      />
+      <div className={styles.captions}>{post.caption}</div>
+      <div className={styles.comments}>
+        <form
+          onSubmit={formik.handleSubmit}
+          className={styles.addCommentContainer}
+        >
+          <label htmlFor="comment">
+            <input
+              type="text"
+              id="comment"
+              name="comment"
+              placeholder="Add your comment here"
+              required
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.comment}
+              className={
+                formik.touched.comment && formik.errors.comment ? "error" : ""
+              }
+            />
+            {formik.touched.comment && formik.errors.comment && (
+              <div className="error-message">{formik.errors.comment}</div>
+            )}
+          </label>
+          <button type="submit" disabled={formik.isSubmitting}>
+            <h4>Comment</h4>
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 function Home() {
   const { user } = useContext(AuthContext);
   const { followState, setFollowState, handleFollow } = useFollow();
@@ -25,7 +171,6 @@ function Home() {
   const [isSuggest, setIsSuggest] = useState(false);
   const [suggestFollow, setSuggestFollow] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
 
   const handleFollowSuggestion = (value) => {
     setIsSuggest(value);
@@ -129,151 +274,6 @@ function Home() {
       </div>
     ))
   );
-
-  function PostCard({ post, user_id }) {
-    const IMAGE_URL = process.env.REACT_APP_API_URL_IMAGES;
-    const [likes, setLike] = useState(post.likes.length || 0);
-    const [comments, setComments] = useState(post.comments.length || 0);
-    const [isLiked, setIsLiked] = useState(
-      post.likes.some((like) => like.user_id === user_id)
-    );
-    const [isLike, setIsLike] = useState(false);
-    const [isComment, setIsComment] = useState(false);
-    const { animateHeart, updateLikes } = useLike();
-
-    const handleLikeModal = (value) => {
-      setIsLike(value);
-    };
-
-    const handleCommentModal = (value) => {
-      setIsComment(value);
-    };
-
-    const validationSchema = Yup.object({
-      comment: Yup.string().required("Comment Required"),
-    });
-
-    const formik = useFormik({
-      initialValues: {
-        comment: "",
-      },
-      validationSchema: validationSchema,
-      onSubmit: async (values, { resetForm }) => {
-        try {
-          const response = await createComment(values, post.id, user_id);
-
-          if (response.success) {
-            alert("Comment Successfully");
-            setComments(comments + 1);
-            resetForm();
-          } else {
-            alert(response.message || "Failed to post comment");
-          }
-        } catch (error) {
-          console.error("Error submitting comment:", error);
-          alert("Something went wrong! Please try again.");
-        }
-      },
-    });
-
-    return (
-      <div className={styles.feedContainer}>
-        <div className={styles.profilePostedBy}>
-          <div className={styles.profilePostedByImage}>
-            <img
-              src={
-                post.profile_url
-                  ? `${IMAGE_URL}${post.profile_url}`
-                  : `${IMAGE_URL}images/profile_image/user.png`
-              }
-              alt=""
-            />
-          </div>
-          <Link to={`/profile/${post.user.username}`}>
-            <h3>{post.user.username}</h3>
-          </Link>
-        </div>
-        <div
-          className={styles.postImageContainer}
-          onDoubleClick={() =>
-            updateLikes(isLiked, setIsLiked, setLike, post.id, user_id)
-          }
-        >
-          <img
-            src={`${IMAGE_URL}${post.image_url}`}
-            alt={post.id}
-            className={animateHeart ? styles.heartAnimation : ""}
-          />
-          <FontAwesomeIcon
-            icon={faHeartSolid}
-            className={`${styles.heartIcon} ${
-              animateHeart ? styles.animate : ""
-            }`}
-          />
-        </div>
-        <div className={styles.likeAndCommentIcons}>
-          <FontAwesomeIcon
-            icon={isLiked ? faHeartSolid : faHeart}
-            className={isLiked ? styles.liked : ""}
-          />
-          <div
-            className={styles.likeCounts}
-            onClick={() => handleLikeModal(true)}
-          >
-            {likes > 0 ? likes : ""}
-          </div>
-          <FontAwesomeIcon icon={faComment} />
-          <div
-            className={styles.likeCounts}
-            onClick={() => handleCommentModal(true)}
-          >
-            {comments > 0 ? comments : ""}
-          </div>
-        </div>
-        <LikeModal
-          isVisible={isLike}
-          handleModal={handleLikeModal}
-          users={post.likes}
-          heading={"Likes"}
-        />
-        <CommentModal
-          isVisible={isComment}
-          handleModal={handleCommentModal}
-          users={post.comments}
-          heading={"Comments"}
-        />
-        <div className={styles.captions}>{post.caption}</div>
-        <div className={styles.comments}>
-          <form
-            onSubmit={formik.handleSubmit}
-            className={styles.addCommentContainer}
-          >
-            <label htmlFor="comment">
-              <input
-                type="text"
-                id="comment"
-                name="comment"
-                placeholder="Add your comment here"
-                required
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.comment}
-                className={
-                  formik.touched.comment && formik.errors.comment ? "error" : ""
-                }
-              />
-              {formik.touched.comment && formik.errors.comment && (
-                <div className="error-message">{formik.errors.comment}</div>
-              )}
-            </label>
-            <button type="submit" disabled={formik.isSubmitting}>
-              <h4>Comment</h4>
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
 }
 
 export default Home;

@@ -30,7 +30,6 @@ function SignIn() {
         const response = await signIn(values);
         if (response.success) {
           // Store JWT token in localStorage for session management
-          document.cookie = `token=${response.token}; path=/; Secure; HttpOnly; SameSite=Strict`;
           setAuthUser(response.user);
           navigate("/homepage", { replace: true });
         } else {

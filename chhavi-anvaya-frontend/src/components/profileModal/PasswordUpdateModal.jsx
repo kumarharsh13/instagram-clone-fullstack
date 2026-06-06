@@ -20,8 +20,8 @@ function PasswordUpdateModal({ isVisible, handleModal, username }) {
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
     confirmPassword: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
+      .oneOf([Yup.ref("newPassword")], "Passwords must match")
+      .required("Please confirm your password"),
   });
 
   const formik = useFormik({

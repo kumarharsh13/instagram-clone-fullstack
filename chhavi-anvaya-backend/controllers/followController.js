@@ -3,7 +3,8 @@ const { Sequelize, where } = require("sequelize");
 
 const createFollow = async (req, res) => {
   try {
-    const { follower_id, following_id } = req.body;
+    const follower_id = req.user.id;
+    const { following_id } = req.body;
     const checkForAlreadyFollowing = await Follow.findOne({
       where: {
         follower_id: follower_id,
@@ -100,15 +101,6 @@ const getFollowSuggestion = async (req, res) => {
   const user_id = req.user && req.user.id;
 
   try {
-    const allUsers = await User.findAll({
-      where: {
-        id: {
-          [Sequelize.Op.ne]: user_id,
-        },
-      },
-      attributes: ["id"],
-    });
-
     const followingUser = await Follow.findAll({
       where: {
         follower_id: user_id,
@@ -140,13 +132,13 @@ const getFollowSuggestion = async (req, res) => {
 };
 
 const mutualFollowing = async (req, res) => {
-  try {
-  } catch (error) {}
+  return res.status(501).json({ message: "Not implemented" });
 };
 
 const deleteFollow = async (req, res) => {
   try {
-    const { follower_id, following_id } = req.body;
+    const follower_id = req.user.id;
+    const { following_id } = req.body;
     const checkForAlreadyFollowing = await Follow.findOne({
       where: {
         follower_id: follower_id,

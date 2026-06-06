@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
 			user_id: DataTypes.INTEGER,
       type: DataTypes.STRING,
       message: DataTypes.STRING,
-			read: DataTypes.STRING,
+			read: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
 		},
 		{
 			sequelize,

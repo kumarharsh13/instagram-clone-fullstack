@@ -4,7 +4,7 @@ dotenv.config();
 
 const sequelize = new Sequelize(process.env.PG_URI, {
   dialect: "postgres",
-  logging: true, // Disable query logging set to false
+  logging: process.env.NODE_ENV !== "production",
 });
 
 const connectDB = async () => {
