@@ -37,6 +37,11 @@ module.exports = (sequelize, DataTypes) => {
         as: "followers", // Alias for users who are following
         otherKey: "follower_id",
       });
+
+      User.hasMany(models.Notification, {
+        foreignKey: "user_id",
+        as: "notifications",
+      });
     }
   }
 

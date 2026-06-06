@@ -15,7 +15,7 @@ router.get("/get_followers", authenticateToken, getFollowers);
 router.get("/get_followings", authenticateToken, getFollowings);
 router.get("/mutual_following", authenticateToken, mutualFollowing);
 router.get("/get_follow_suggestion", authenticateToken, getFollowSuggestion);
-router.post("/create_follow", createFollow);
+router.post("/create_follow", authenticateToken, createFollow);
 router.delete("/delete_follow", authenticateToken, deleteFollow);
 
 module.exports = router;

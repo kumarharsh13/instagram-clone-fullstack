@@ -29,17 +29,20 @@ const signUp = async (req, res) => {
       name: fullName,
     });
 
+    const defaultUsername = process.env.DEFAULT_FOLLOW_USERNAME || "chhavi_anvaya";
     const defaultToFollow = await User.findOne({
       where: {
-        username: "chhavi_anvaya"
+        username: defaultUsername
       },
       attributes: ["id"],
-    })
+    });
 
-    await Follow.create({
-      follower_id: newUser.id,
-      following_id: defaultToFollow.id
-    })
+    if (defaultToFollow) {
+      await Follow.create({
+        follower_id: newUser.id,
+        following_id: defaultToFollow.id,
+      });
+    }
 
     res.status(201).json({ success: true, user: newUser });
   } catch (error) {

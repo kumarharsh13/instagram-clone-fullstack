@@ -1,28 +1,28 @@
-import { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { AuthContext } from '../../context/AuthContext';
-import { signIn } from '../../services/authService';
-import styles from '../signin/SignIn.module.css';
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { AuthContext } from "../../context/AuthContext";
+import { signIn } from "../../services/authService";
+import styles from "../signin/SignIn.module.css";
 
 const validationSchema = Yup.object({
   email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
+    .email("Invalid email address")
+    .required("Email is required"),
   password: Yup.string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
 });
 
 function SignIn() {
-  const { setAuthUser } = useContext(AuthContext)
+  const { setAuthUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -30,14 +30,13 @@ function SignIn() {
         const response = await signIn(values);
         if (response.success) {
           // Store JWT token in localStorage for session management
-          document.cookie = `token=${response.token}; path=/; Secure; HttpOnly; SameSite=Strict`;
-          setAuthUser(response.user)
-          navigate('/homepage', { replace: true });
+          setAuthUser(response.user);
+          navigate("/homepage", { replace: true });
         } else {
           alert(response.message);
         }
       } catch (error) {
-        alert('Something went wrong! Please try again.');
+        alert("Something went wrong! Please try again.");
       }
     },
   });
@@ -63,7 +62,7 @@ function SignIn() {
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
                   className={
-                    formik.touched.email && formik.errors.email ? 'error' : ''
+                    formik.touched.email && formik.errors.email ? "error" : ""
                   }
                 />
                 {formik.touched.email && formik.errors.email && (
@@ -82,8 +81,8 @@ function SignIn() {
                   value={formik.values.password}
                   className={
                     formik.touched.password && formik.errors.password
-                      ? 'error'
-                      : ''
+                      ? "error"
+                      : ""
                   }
                 />
                 {formik.touched.password && formik.errors.password && (

@@ -11,6 +11,8 @@
 # production
 /build
 
+# Local Storage 
+/images
 # misc
 .env
 .DS_Store

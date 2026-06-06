@@ -70,9 +70,9 @@ function FollowModal({ isVisible, handleModal, users, heading }) {
                 <div className={styles.accountImage}>
                   <img
                     src={
-                      user.profile_url
-                        ? `${IMAGE_URL}${user.profile_url}`
-                        : `${IMAGE_URL}images/profile_image/user.png`
+                      `${IMAGE_URL}${user.profile_url}` ||
+                      `${IMAGE_URL}${user.user.profile_url}` ||
+                      `${IMAGE_URL}images/profile_image/user.png`
                     }
                     alt="Suggested Account"
                   />

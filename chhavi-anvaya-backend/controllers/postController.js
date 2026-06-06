@@ -9,12 +9,13 @@ const createPost = async (req, res) => {
       return res.status(400).json({ message: err.message });
     }
 
-    const { caption, user_id } = req.body;
+    const { caption } = req.body;
+    const user_id = req.user.id;
     const imageFile = req.file;
 
-    if (!caption || !user_id || !imageFile) {
+    if (!caption || !imageFile) {
       return res.status(400).json({
-        message: "All fields (image, caption, user_id) are required!",
+        message: "All fields (image, caption) are required!",
       });
     }
 
@@ -213,13 +214,16 @@ const getOtherUserProfilePost = async (req, res) => {
   const { username } = req.query;
 
   try {
-    console.debug(req.query)
     const otherUser = await User.findOne({
       where: {
         username: username,
       },
       attributes: ["id"],
     });
+
+    if (!otherUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     const isFollowingOtherUser = await Follow.findOne({
       where: {
@@ -280,7 +284,8 @@ const getOtherUserProfilePost = async (req, res) => {
 
 const createLike = async (req, res) => {
   try {
-    const { post_id, user_id } = req.body;
+    const { post_id } = req.body;
+    const user_id = req.user.id;
 
     const exisitingLike = await Like.findOne({
       where: { post_id: post_id, user_id: user_id },
@@ -306,7 +311,8 @@ const createLike = async (req, res) => {
 
 const deleteLike = async (req, res) => {
   try {
-    const { post_id, user_id } = req.body;
+    const { post_id } = req.body;
+    const user_id = req.user.id;
     const exisitingLike = await Like.findOne({ where: { post_id, user_id } });
     if (!exisitingLike) {
       return res.status(400).json({ message: "Like not found" });
@@ -326,8 +332,8 @@ const deleteLike = async (req, res) => {
 
 const createComment = async (req, res) => {
   try {
-    const { comment, post_id, user_id } = req.body;
-    console.debug(req.body);
+    const { comment, post_id } = req.body;
+    const user_id = req.user.id;
     const newComment = await Comment.create({
       comment,
       post_id,
