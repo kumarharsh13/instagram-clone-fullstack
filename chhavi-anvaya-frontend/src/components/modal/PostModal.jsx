@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,
@@ -50,15 +51,15 @@ function PostModal({ isVisible, handleModal, post }) {
         const response = await createComment(values, post.id, user.id);
 
         if (response.success) {
-          alert("Comment added successfully!");
+          toast.success("Comment added successfully!");
           setComments(comments + 1);
           resetForm();
         } else {
-          alert(response.message || "Failed to post comment");
+          toast.error(response.message || "Failed to post comment");
         }
       } catch (error) {
         console.error("Error submitting comment:", error);
-        alert("Something went wrong! Please try again.");
+        toast.error("Something went wrong! Please try again.");
       }
     },
   });
@@ -136,8 +137,8 @@ function PostModal({ isVisible, handleModal, post }) {
               <div className={styles.captions}>{post.caption}</div>
               <hr />
               <div className={styles.commentList}>
-                {post.comments.map((comment, index) => (
-                  <div className={styles.commentedAccount} key={index}>
+                {post.comments.map((comment) => (
+                  <div className={styles.commentedAccount} key={comment.user?.id ?? comment.comment}>
                     <div className={styles.accountDetails}>
                       <div className={styles.accountImage}>
                         <img

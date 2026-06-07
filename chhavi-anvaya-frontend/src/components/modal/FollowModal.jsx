@@ -65,7 +65,7 @@ function FollowModal({ isVisible, handleModal, users, heading }) {
             : null;
 
           return (
-            <div className={styles.suggestedAccount} key={index}>
+            <div className={styles.suggestedAccount} key={userIdToToggle || index}>
               <div className={styles.accountDetails}>
                 <div className={styles.accountImage}>
                   <img

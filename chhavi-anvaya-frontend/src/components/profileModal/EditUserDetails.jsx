@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
@@ -41,15 +42,15 @@ function EditUserDetails({ isVisible, handleModal, username }) {
       try {
         const response = await editProfileDetails(values);
         if (response.success) {
-          alert("Profile Updated successfully!");
+          toast.success("Profile updated successfully!");
           resetForm();
           navigate(`/profile/${username}`, { replace: true });
         } else {
-          alert(response.message || "Failed to update profile");
+          toast.error(response.message || "Failed to update profile");
         }
       } catch (error) {
         console.error("Error submitting updating profile", error);
-        alert("Something went wrong! Please try again.");
+        toast.error("Something went wrong! Please try again.");
       }
     },
   });
