@@ -72,8 +72,8 @@ function PostCard({ post, user_id }) {
         <div className={styles.profilePostedByImage}>
           <img
             src={
-              post.profile_url
-                ? `${IMAGE_URL}${post.profile_url}`
+              post.user.profile_url
+                ? `${IMAGE_URL}${post.user.profile_url}`
                 : `${IMAGE_URL}images/profile_image/user.png`
             }
             alt=""

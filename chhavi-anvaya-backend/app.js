@@ -47,7 +47,10 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/images", (req, res, next) => {
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  next();
+}, express.static(path.join(__dirname, "images")));
 
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/users", userRoutes);
