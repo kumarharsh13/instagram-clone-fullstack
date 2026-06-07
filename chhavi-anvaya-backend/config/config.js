@@ -1,5 +1,6 @@
 const dotenv = require("dotenv");
-dotenv.config(); // Loads environment variables from the .env file
+const { sqlLogger } = require("./logger");
+dotenv.config();
 
 module.exports = {
   development: {
@@ -9,6 +10,7 @@ module.exports = {
     host: process.env.PG_HOST,
     dialect: "postgres",
     port: process.env.PG_PORT,
+    logging: sqlLogger,
   },
 
   production: {
@@ -18,5 +20,6 @@ module.exports = {
     host: process.env.PG_HOST,
     dialect: "postgres",
     port: process.env.PG_PORT,
+    logging: false,
   },
 };
