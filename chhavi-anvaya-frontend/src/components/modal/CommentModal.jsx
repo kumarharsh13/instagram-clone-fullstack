@@ -16,7 +16,7 @@ function CommentModal({ isVisible, handleModal, users, heading }) {
         <h1>{heading}</h1>
         {users.map((user, index) => {
           return (
-            <div className={styles.commentedAccount} key={index}>
+            <div className={styles.commentedAccount} key={user.user?.id ?? index}>
               <div className={styles.accountDetails}>
                 <div className={styles.accountImage}>
                   <img

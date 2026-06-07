@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
@@ -52,15 +53,15 @@ function PostCard({ post, user_id }) {
         const response = await createComment(values, post.id, user_id);
 
         if (response.success) {
-          alert("Comment Successfully");
+          toast.success("Comment posted!");
           setComments(comments + 1);
           resetForm();
         } else {
-          alert(response.message || "Failed to post comment");
+          toast.error(response.message || "Failed to post comment");
         }
       } catch (error) {
         console.error("Error submitting comment:", error);
-        alert("Something went wrong! Please try again.");
+        toast.error("Something went wrong! Please try again.");
       }
     },
   });

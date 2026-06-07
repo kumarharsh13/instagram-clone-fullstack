@@ -71,9 +71,9 @@ function SearchNavigation() {
           {results.length === 0 ? (
             <p>No User Found</p>
           ) : (
-            results.map((user, index) => (
-              <Link to={`/profile/${user.username}`}>
-                <div key={index} className={styles.searchProfileContainer}>
+            results.map((user) => (
+              <Link key={user.id} to={`/profile/${user.username}`}>
+                <div className={styles.searchProfileContainer}>
                   <div className={styles.searchUserProfileImage}>
                     <img
                       src={

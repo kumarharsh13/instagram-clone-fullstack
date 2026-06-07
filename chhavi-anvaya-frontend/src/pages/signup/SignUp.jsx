@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { signUp } from "../../services/authService";
@@ -39,10 +40,10 @@ function SignUp() {
         if (response.success) {
           navigate('/');
         } else {
-          alert(response.message);
+          toast.error(response.message);
         }
       } catch (error) {
-        alert("Something went wrong! Please try again.");
+        toast.error("Something went wrong! Please try again.");
       }
     },
   });
@@ -171,7 +172,7 @@ function SignUp() {
                   People who use our service may have uploaded your contact
                   information to Instagram.
                   <a
-                    href="www.google.com"
+                    href="https://www.google.com"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -184,7 +185,7 @@ function SignUp() {
                 <div>
                   By signing up, you agree to our
                   <a
-                    href="www.google.com"
+                    href="https://www.google.com"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -193,7 +194,7 @@ function SignUp() {
                   </a>
                   ,
                   <a
-                    href="www.google.com"
+                    href="https://www.google.com"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -202,7 +203,7 @@ function SignUp() {
                   </a>{" "}
                   and
                   <a
-                    href="www.google.com"
+                    href="https://www.google.com"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

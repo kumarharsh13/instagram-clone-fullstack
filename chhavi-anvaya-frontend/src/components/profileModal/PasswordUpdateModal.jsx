@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import styles from "../profileModal/ProfileEdit.module.css";
@@ -35,15 +36,15 @@ function PasswordUpdateModal({ isVisible, handleModal, username }) {
       try {
         const response = await changePassword(values);
         if (response.success) {
-          alert("Password changed successfully!");
+          toast.success("Password changed successfully!");
           resetForm();
 					navigate(`/profile/${username}`, { replace: true });
         } else {
-          alert(response.message || "Failed to change password");
+          toast.error(response.message || "Failed to change password");
         }
       } catch (error) {
         console.error("Error submitting updating password", error);
-        alert("Something went wrong! Please try again.");
+        toast.error("Something went wrong! Please try again.");
       }
     },
   });

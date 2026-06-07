@@ -68,6 +68,14 @@ function Main() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="*"
+            element={
+              <div style={{ padding: "2rem", textAlign: "center" }}>
+                <h2>404 — Page not found</h2>
+              </div>
+            }
+          />
         </Routes>
       </div>
     </div>

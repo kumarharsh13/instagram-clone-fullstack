@@ -71,10 +71,8 @@ function Navigation({ handleSetCreatePost }) {
             <li onClick={() => handleIconClick(<SearchNavigation />)}>
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </li>
-            <li>
-              <Link to="/message">
-                <FontAwesomeIcon icon={faMessage} />
-              </Link>
+            <li style={{ opacity: 0.4, cursor: "not-allowed" }}>
+              <FontAwesomeIcon icon={faMessage} title="Coming soon" />
             </li>
             <li onClick={() => handleIconClick(<NotificationNavigation />)}>
               <FontAwesomeIcon icon={faHeart} />
@@ -87,10 +85,8 @@ function Navigation({ handleSetCreatePost }) {
                 <FontAwesomeIcon icon={faUser} />
               </Link>
             </li>
-            <li>
-              <Link to="/settings">
-                <FontAwesomeIcon icon={faGear} />
-              </Link>
+            <li style={{ opacity: 0.4, cursor: "not-allowed" }}>
+              <FontAwesomeIcon icon={faGear} title="Coming soon" />
             </li>
             <li onClick={handleSignOut}>
               <FontAwesomeIcon icon={faRightFromBracket} />

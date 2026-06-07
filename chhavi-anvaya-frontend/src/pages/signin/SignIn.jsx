@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -33,10 +34,10 @@ function SignIn() {
           setAuthUser(response.user);
           navigate("/homepage", { replace: true });
         } else {
-          alert(response.message);
+          toast.error(response.message);
         }
       } catch (error) {
-        alert("Something went wrong! Please try again.");
+        toast.error("Something went wrong! Please try again.");
       }
     },
   });

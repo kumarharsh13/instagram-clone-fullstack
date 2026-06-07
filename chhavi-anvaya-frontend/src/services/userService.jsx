@@ -20,9 +20,6 @@ const changePassword = async (values) => {
 };
 
 const editProfileDetails = async (values) => {
-  console.log("Form Data: ", values); // Log to inspect the data
-
-  // Create a FormData object
   const formData = new FormData();
   
   // Append text fields (username, mobile, bio)

@@ -1,4 +1,5 @@
 import { useState, useRef, useContext } from "react";
+import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import styles from "../createPostForm/CreatePostForm.module.css";
@@ -58,13 +59,13 @@ function CreatePostForm({ closeModal }) {
 
       const response = await create_post(formDataToSubmit);
       if (response.success) {
-        alert("Post Published Successfully!");
+        toast.success("Post published successfully!");
         closeModal();
         navigate("/homepage", { replace: true });
       }
     } catch (error) {
       console.error("Error creating post:", error);
-      alert("Error publishing post.");
+      toast.error("Error publishing post.");
     }
   };
 
