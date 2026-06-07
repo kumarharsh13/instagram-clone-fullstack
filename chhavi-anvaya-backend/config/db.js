@@ -5,6 +5,12 @@ dotenv.config();
 const sequelize = new Sequelize(process.env.PG_URI, {
   dialect: "postgres",
   logging: process.env.NODE_ENV !== "production",
+  pool: {
+    max: 10,
+    min: 2,
+    acquire: 30000,
+    idle: 10000,
+  },
 });
 
 const connectDB = async () => {

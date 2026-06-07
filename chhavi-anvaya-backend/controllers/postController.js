@@ -1,7 +1,45 @@
 const { User, Post, Like, Comment, Follow } = require("../models");
 const upload = require("../middleware/post_image");
 const path = require("path");
-const { where } = require("sequelize");
+
+const getPagination = (query) => {
+  const page = Math.max(1, parseInt(query.page) || 1);
+  const limit = Math.min(50, Math.max(1, parseInt(query.limit) || 10));
+  const offset = (page - 1) * limit;
+  return { limit, offset, page };
+};
+
+const postIncludes = [
+  {
+    model: User,
+    as: "user",
+    attributes: ["id", "username", "name", "bio", "profile_url"],
+  },
+  {
+    model: Like,
+    as: "likes",
+    attributes: ["user_id"],
+    include: [
+      {
+        model: User,
+        as: "user",
+        attributes: ["id", "username", "name", "bio", "profile_url"],
+      },
+    ],
+  },
+  {
+    model: Comment,
+    as: "comments",
+    attributes: ["comment"],
+    include: [
+      {
+        model: User,
+        as: "user",
+        attributes: ["id", "username", "name", "bio", "profile_url"],
+      },
+    ],
+  },
+];
 
 const createPost = async (req, res) => {
   upload.single("image")(req, res, async (err) => {
@@ -40,45 +78,19 @@ const createPost = async (req, res) => {
 };
 
 const getPosts = async (req, res) => {
+  const { limit, offset, page } = getPagination(req.query);
   try {
-    const posts = await Post.findAll({
-      include: [
-        {
-          model: User,
-          as: "user",
-          attributes: ["id", "username", "name", "bio", "profile_url"],
-        },
-        {
-          model: Like,
-          as: "likes",
-          attributes: ["user_id"],
-          include: [
-            {
-              model: User,
-              as: "user",
-              attributes: ["id", "username", "name", "bio", "profile_url"],
-            },
-          ],
-        },
-        {
-          model: Comment,
-          as: "comments",
-          attributes: ["comment"],
-          include: [
-            {
-              model: User,
-              as: "user",
-              attributes: ["id", "username", "name", "bio", "profile_url"],
-            },
-          ],
-        },
-      ],
+    const { count, rows: posts } = await Post.findAndCountAll({
+      include: postIncludes,
       order: [["createdAt", "DESC"]],
+      limit,
+      offset,
     });
 
     return res.status(200).json({
       success: true,
       posts,
+      pagination: { page, limit, total: count, pages: Math.ceil(count / limit) },
     });
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -92,48 +104,20 @@ const getMyPosts = async (req, res) => {
     return res.status(401).json({ message: "Unauthorized. Please log in." });
   }
 
+  const { limit, offset, page } = getPagination(req.query);
   try {
-    const posts = await Post.findAll({
-      where: {
-        user_id: user_id,
-      },
-      include: [
-        {
-          model: User,
-          as: "user",
-          attributes: ["id", "username", "name", "bio", "profile_url"],
-        },
-        {
-          model: Like,
-          as: "likes",
-          attributes: ["user_id"],
-          include: [
-            {
-              model: User,
-              as: "user",
-              attributes: ["id", "username", "name", "bio", "profile_url"],
-            },
-          ],
-        },
-        {
-          model: Comment,
-          as: "comments",
-          attributes: ["comment"],
-          include: [
-            {
-              model: User,
-              as: "user",
-              attributes: ["id", "username", "name", "bio", "profile_url"],
-            },
-          ],
-        },
-      ],
+    const { count, rows: posts } = await Post.findAndCountAll({
+      where: { user_id },
+      include: postIncludes,
       order: [["createdAt", "DESC"]],
+      limit,
+      offset,
     });
 
     return res.status(200).json({
       success: true,
       posts,
+      pagination: { page, limit, total: count, pages: Math.ceil(count / limit) },
     });
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -147,57 +131,27 @@ const getFollowingUserPosts = async (req, res) => {
     return res.status(401).json({ message: "Unauthorized. Please log in." });
   }
 
+  const { limit, offset, page } = getPagination(req.query);
   try {
     const followingUser = await Follow.findAll({
-      where: {
-        follower_id: user_id,
-      },
+      where: { follower_id: user_id },
       attributes: ["following_id"],
     });
 
     const followedUserIds = followingUser.map((follow) => follow.following_id);
 
-    const posts = await Post.findAll({
-      where: {
-        user_id: followedUserIds,
-      },
-      include: [
-        {
-          model: User,
-          as: "user",
-          attributes: ["id", "username", "name", "bio", "profile_url"],
-        },
-        {
-          model: Like,
-          as: "likes",
-          attributes: ["user_id"],
-          include: [
-            {
-              model: User,
-              as: "user",
-              attributes: ["id", "username", "name", "bio", "profile_url"],
-            },
-          ],
-        },
-        {
-          model: Comment,
-          as: "comments",
-          attributes: ["comment"],
-          include: [
-            {
-              model: User,
-              as: "user",
-              attributes: ["id", "username", "name", "bio", "profile_url"],
-            },
-          ],
-        },
-      ],
+    const { count, rows: posts } = await Post.findAndCountAll({
+      where: { user_id: followedUserIds },
+      include: postIncludes,
       order: [["createdAt", "DESC"]],
+      limit,
+      offset,
     });
 
     return res.status(200).json({
       success: true,
       posts,
+      pagination: { page, limit, total: count, pages: Math.ceil(count / limit) },
     });
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -210,14 +164,13 @@ const getOtherUserProfilePost = async (req, res) => {
   if (!user_id) {
     return res.status(401).json({ message: "Unauthorized. Please log in." });
   }
-  
+
   const { username } = req.query;
+  const { limit, offset, page } = getPagination(req.query);
 
   try {
     const otherUser = await User.findOne({
-      where: {
-        username: username,
-      },
+      where: { username },
       attributes: ["id"],
     });
 
@@ -226,55 +179,23 @@ const getOtherUserProfilePost = async (req, res) => {
     }
 
     const isFollowingOtherUser = await Follow.findOne({
-      where: {
-        follower_id: user_id,
-        following_id: otherUser.id,
-      },
+      where: { follower_id: user_id, following_id: otherUser.id },
       attributes: ["id"],
     });
 
-    const posts = await Post.findAll({
-      where: {
-        user_id: otherUser.id,
-      },
-      include: [
-        {
-          model: User,
-          as: "user",
-          attributes: ["id", "username", "name", "bio", "profile_url"],
-        },
-        {
-          model: Like,
-          as: "likes",
-          attributes: ["user_id"],
-          include: [
-            {
-              model: User,
-              as: "user",
-              attributes: ["id", "username", "name", "bio", "profile_url"],
-            },
-          ],
-        },
-        {
-          model: Comment,
-          as: "comments",
-          attributes: ["comment"],
-          include: [
-            {
-              model: User,
-              as: "user",
-              attributes: ["id", "username", "name", "bio", "profile_url"],
-            },
-          ],
-        },
-      ],
+    const { count, rows: posts } = await Post.findAndCountAll({
+      where: { user_id: otherUser.id },
+      include: postIncludes,
       order: [["createdAt", "DESC"]],
+      limit,
+      offset,
     });
 
     return res.status(200).json({
       success: true,
       posts,
       isFollowingOtherUser,
+      pagination: { page, limit, total: count, pages: Math.ceil(count / limit) },
     });
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -288,13 +209,11 @@ const createLike = async (req, res) => {
     const user_id = req.user.id;
 
     const exisitingLike = await Like.findOne({
-      where: { post_id: post_id, user_id: user_id },
+      where: { post_id, user_id },
     });
 
     if (exisitingLike) {
-      return res
-        .status(400)
-        .json({ message: "User has already liked the post." });
+      return res.status(400).json({ message: "User has already liked the post." });
     }
 
     const newLike = await Like.create({ post_id, user_id });
@@ -334,15 +253,11 @@ const createComment = async (req, res) => {
   try {
     const { comment, post_id } = req.body;
     const user_id = req.user.id;
-    const newComment = await Comment.create({
-      comment,
-      post_id,
-      user_id,
-    });
+    const newComment = await Comment.create({ comment, post_id, user_id });
     res.status(200).json({
       success: true,
       message: "Comment added successfully",
-      newComment: newComment,
+      newComment,
     });
   } catch (error) {
     console.error("Error adding comment");
