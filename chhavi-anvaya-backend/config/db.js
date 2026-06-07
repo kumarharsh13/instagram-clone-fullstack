@@ -1,10 +1,11 @@
 const { Sequelize } = require("sequelize");
 const dotenv = require("dotenv");
+const { sqlLogger, log } = require("./logger");
 dotenv.config();
 
 const sequelize = new Sequelize(process.env.PG_URI, {
   dialect: "postgres",
-  logging: process.env.NODE_ENV !== "production",
+  logging: process.env.NODE_ENV === "production" ? false : sqlLogger,
   pool: {
     max: 10,
     min: 2,
@@ -16,9 +17,9 @@ const sequelize = new Sequelize(process.env.PG_URI, {
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log("PostgreSQL connected");
+    log.dbConnected();
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    log.dbError(error);
     process.exit(1);
   }
 };

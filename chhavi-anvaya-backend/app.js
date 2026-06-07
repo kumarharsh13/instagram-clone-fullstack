@@ -3,7 +3,6 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
-const morgan = require("morgan");
 const compression = require("compression");
 const rateLimit = require("express-rate-limit");
 const authRoutes = require("./routes/authRoutes");
@@ -23,7 +22,8 @@ app.use(compression());
 
 // HTTP request logging — skip in test
 if (process.env.NODE_ENV !== "test") {
-  app.use(morgan("combined"));
+  const { httpLogger } = require("./config/logger");
+  app.use(httpLogger);
 }
 
 // Rate limiting on auth endpoints — 20 requests per 15 minutes per IP
